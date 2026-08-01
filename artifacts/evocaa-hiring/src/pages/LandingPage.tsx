@@ -126,6 +126,8 @@ export default function LandingPage({ onApply }: LandingPageProps) {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg-page)' }}>
+      {/* Textured backdrop — sits behind the glass card so backdrop-filter has something to blur */}
+      <div className="page-backdrop" aria-hidden />
       {/* Full-page grain overlay — card reads as floating above textured backdrop */}
       <div className="grain-overlay" aria-hidden />
 
