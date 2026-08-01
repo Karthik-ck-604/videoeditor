@@ -98,7 +98,7 @@ function AppContent() {
         submittedAt: new Date().toISOString(),
       };
 
-      const res = await fetch('/api/submit', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
