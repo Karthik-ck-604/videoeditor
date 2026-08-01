@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -6,6 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import LandingPage from '@/pages/LandingPage';
 import Assessment from '@/pages/Assessment';
 import { AssessmentData, INITIAL_DATA, calcTechScore, calcWorkStyleScore } from '@/lib/assessmentData';
+import { initLenis, getLenis } from '@/lib/lenis';
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,11 @@ function AppContent() {
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
 
+  // Page-wide inertia scroll (Lenis) — degrades gracefully for reduced-motion.
+  useEffect(() => {
+    initLenis();
+  }, []);
+
   const handleChange = useCallback((updates: Partial<AssessmentData>) => {
     setData((prev) => {
       const next = { ...prev, ...updates };
@@ -40,12 +46,22 @@ function AppContent() {
 
   const handleApply = useCallback(() => {
     setView('assessment');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const lenis = getLenis();
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
   }, []);
 
   const handleBack = useCallback(() => {
     setView('landing');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const lenis = getLenis();
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
   }, []);
 
   const handleSubmit = useCallback(async () => {

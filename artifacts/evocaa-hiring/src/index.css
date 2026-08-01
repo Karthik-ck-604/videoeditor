@@ -159,6 +159,8 @@
   --glass-border: rgba(255, 255, 255, 0.14);
   --glass-blur: blur(16px);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --radius-card: 28px;
+  --radius-panel: 20px;
 
   /* Legacy aliases for assessment flow — now using lime accent */
   --evocaa-bg: var(--bg-page);
@@ -182,8 +184,11 @@
     box-sizing: border-box;
   }
 
-  html {
-    scroll-behavior: smooth;
+  /* Native smooth scroll is replaced by Lenis when available. */
+  @media (prefers-reduced-motion: no-preference) {
+    html:not(.lenis) {
+      scroll-behavior: smooth;
+    }
   }
 
   body {
@@ -346,31 +351,68 @@
   opacity: 1;
 }
 
-/* ── Main content card ── */
+/* ── Main content card (floating shell over textured backdrop) ── */
 .main-card {
   position: relative;
   background: var(--bg-card);
-  border-radius: 28px;
-  margin: 0 24px;
+  border-radius: var(--radius-card);
+  margin-inline: clamp(20px, 5.5vw, 96px);
+  /* ~48px of page bg visible between floating nav and card top */
+  margin-top: clamp(112px, 14vw, 144px);
+  margin-bottom: clamp(48px, 8vw, 96px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 }
 
-.main-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+/* ── Floating pill nav bar ── */
+.floating-nav {
+  position: fixed;
+  top: clamp(12px, 2vw, 20px);
+  left: 0;
+  right: 0;
   z-index: 50;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
+  margin-inline: clamp(20px, 5.5vw, 96px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition: color 0.25s ease, background-color 0.25s ease;
+}
+
+.nav-link-active {
+  background: color-mix(in srgb, var(--accent-dim) 15%, transparent);
+  color: var(--text-primary);
+}
+
+/* ── Hero media block (nested inside card) ── */
+.hero-media {
+  position: relative;
+  border-radius: var(--radius-panel);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  max-height: 70vh;
 }
 
 @media (max-width: 767px) {
-  .main-card {
-    margin: 0 12px;
-    border-radius: 16px;
+  .hero-media {
+    aspect-ratio: 4 / 5;
+    max-height: 60vh;
   }
 }
 
@@ -418,7 +460,8 @@
   .glass-meta,
   .glass-requirement,
   .glass-cta,
-  .glass-nav {
+  .glass-nav,
+  .floating-nav {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
@@ -522,11 +565,12 @@
 }
 
 .step-num {
+  font-family: var(--app-font-mono);
   font-size: 40px;
   font-weight: 700;
   line-height: 1;
-  color: var(--text-primary);
-  opacity: 0.3;
+  color: var(--accent);
+  opacity: 0.9;
   flex-shrink: 0;
   min-width: 3.5rem;
 }
@@ -575,7 +619,40 @@
 
 /* ── Radial glow bg for quiz ── */
 .quiz-glow-bg {
-  background: radial-gradient(ellipse 70% 50% at 50% 40%, rgba(201, 255, 61, 0.18) 0%, rgba(143, 191, 42, 0.1) 40%, transparent 80%);
+  background:
+    radial-gradient(circle at 15% 0%, rgba(201, 255, 61, 0.10), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(201, 255, 61, 0.05), transparent 60%),
+    linear-gradient(180deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+}
+
+/* ── Quiz Continue button — blocked state ── */
+.btn-quiz-blocked {
+  background: var(--bg-elevated);
+  border: 1px solid var(--divider);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  transition: none;
+}
+
+/* ── Quiz Continue button — final/submit state ── */
+.btn-quiz-final {
+  background: linear-gradient(135deg, var(--accent) 0%, #E4FF8A 100%);
+  border: none;
+  color: #0B0B0D;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 0 24px rgba(201, 255, 61, 0.35);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-quiz-final:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 32px rgba(201, 255, 61, 0.5), 0 8px 30px rgba(201, 255, 61, 0.4);
+}
+
+.btn-quiz-final:active {
+  transform: translateY(0);
 }
 
 /* ── Progress bar animated ── */
@@ -755,6 +832,28 @@
   .glass-requirement:hover { transform: none; }
   .quiz-option:hover { transform: none; }
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ── Lenis inertia scroll base (recommended) ── */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }
 
 /* Elevation system */

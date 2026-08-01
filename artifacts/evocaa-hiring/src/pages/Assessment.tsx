@@ -208,6 +208,8 @@ function NavButtons({
   isLast,
   isSubmitting,
   nextLabel,
+  hasAnswered,
+  isLastQuestion,
 }: {
   onBack: () => void;
   onNext: () => void;
@@ -215,7 +217,19 @@ function NavButtons({
   isLast?: boolean;
   isSubmitting?: boolean;
   nextLabel?: string;
+  hasAnswered?: boolean;
+  isLastQuestion?: boolean;
 }) {
+  const isQuizStep = hasAnswered !== undefined;
+  const isBlocked = isQuizStep && !hasAnswered;
+  const isFinal = isQuizStep && hasAnswered && isLastQuestion;
+
+  const btnClass = isBlocked
+    ? 'btn-quiz-blocked'
+    : isFinal
+      ? 'btn-quiz-final'
+      : 'btn-gradient';
+
   return (
     <div className="flex gap-3 mt-8">
       {!isFirst && (
@@ -240,16 +254,32 @@ function NavButtons({
       )}
       <button
         onClick={onNext}
-        disabled={isSubmitting}
-        className="btn-gradient flex-1 flex items-center justify-center gap-2 px-8 py-3.5 rounded-full font-semibold"
-        style={{ background: 'var(--evocaa-gradient)', opacity: isSubmitting ? 0.7 : 1 }}
+        disabled={isSubmitting || isBlocked}
+        className={`${btnClass} flex-1 flex items-center justify-center gap-2 px-8 py-3.5 rounded-full font-semibold`}
+        style={{
+          background: isBlocked
+            ? undefined
+            : isFinal
+              ? undefined
+              : 'var(--evocaa-gradient)',
+          opacity: isSubmitting ? 0.7 : 1,
+        }}
       >
         {isSubmitting ? (
           <span className="animate-spin">⟳</span>
         ) : (
           <>
-            {nextLabel || (isLast ? 'Submit Assessment' : 'Continue')}
-            {!isLast && <ChevronRight size={18} />}
+            {nextLabel ||
+              (isFinal
+                ? 'Submit'
+                : isLast
+                  ? 'Submit Assessment'
+                  : 'Continue')}
+            {isFinal ? (
+              <Check size={18} />
+            ) : !isLast ? (
+              <ChevronRight size={18} style={{ opacity: isBlocked ? 0.4 : 1 }} />
+            ) : null}
           </>
         )}
       </button>
@@ -776,7 +806,12 @@ function Step3({
         </button>
       </div>
 
-      <NavButtons onBack={onBack} onNext={handleNext} />
+      <NavButtons
+        onBack={onBack}
+        onNext={handleNext}
+        hasAnswered={Boolean(data.tech[currentQ])}
+        isLastQuestion={currentQ === total - 1}
+      />
     </div>
   );
 }
@@ -927,7 +962,12 @@ function Step4({
         </button>
       </div>
 
-      <NavButtons onBack={onBack} onNext={handleNext} />
+      <NavButtons
+        onBack={onBack}
+        onNext={handleNext}
+        hasAnswered={Boolean(data.workStyle[currentQ])}
+        isLastQuestion={currentQ === total - 1}
+      />
     </div>
   );
 }

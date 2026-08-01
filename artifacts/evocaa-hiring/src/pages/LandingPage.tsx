@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { useStickyNav } from '@/hooks/useStickyNav';
+import React, { useEffect, useState } from 'react';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
+import { getLenis } from '@/lib/lenis';
 
 interface LandingPageProps {
   onApply: () => void;
@@ -71,19 +71,42 @@ const NAV_LINKS = [
   { label: 'Day-to-Day', href: '#day-to-day' },
 ];
 
-function MetaCell({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex flex-col gap-1.5 px-2 py-1 lg:flex-1">
-      <span className="section-eyebrow">{label}</span>
-      <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
-        {value}
-      </span>
-    </div>
-  );
+const META_ITEMS = [
+  { label: 'Date Posted', value: 'Jul 31, 2026' },
+  { label: 'Team', value: 'Content & Marketing' },
+  { label: 'Location', value: 'Coimbatore (Office)' },
+  { label: 'Type', value: 'Full-Time' },
+];
+
+function scrollToHash(href: string) {
+  const el = document.querySelector(href);
+  if (!el) return;
+  const lenis = getLenis();
+  if (lenis) {
+    lenis.scrollTo(el as HTMLElement, { offset: -96 });
+  } else {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 export default function LandingPage({ onApply }: LandingPageProps) {
-  const isGlassNav = useStickyNav(60);
+  const [activeSection, setActiveSection] = useState<string>('');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(`#${entry.target.id}`);
+          }
+        });
+      },
+      { threshold: 0.4, rootMargin: '0px 0px -40% 0px' },
+    );
+
+    document.querySelectorAll('#role, #requirements, #day-to-day').forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -103,61 +126,91 @@ export default function LandingPage({ onApply }: LandingPageProps) {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg-page)' }}>
-      {/* ── Navbar (full-bleed, outside card) ── */}
-      <nav
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
-        style={
-          isGlassNav
-            ? undefined
-            : {
-                background: 'transparent',
-                borderBottom: '1px solid transparent',
-              }
-        }
-      >
-        <div
-          className={`transition-all duration-500 ${isGlassNav ? 'glass-nav' : ''}`}
-        >
-          <div className="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
-            <span
-              className="text-sm font-bold tracking-[0.12em] uppercase"
-              style={{ color: 'var(--text-primary)' }}
-            >
-              Evocaa
-            </span>
+      {/* Full-page grain overlay — card reads as floating above textured backdrop */}
+      <div className="grain-overlay" aria-hidden />
 
-            <div className="flex items-center gap-6 sm:gap-8">
-              {NAV_LINKS.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="hidden sm:block text-xs font-medium tracking-wide transition-colors duration-200"
-                  style={{ color: 'var(--text-secondary)' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
-                >
-                  {link.label}
-                </a>
-              ))}
-              {/* <button
-                onClick={onApply}
-                className="btn-lime inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wide"
-              >
-                Apply Now
-              </button> */}
-            </div>
-          </div>
+      {/* ── Floating pill nav ── */}
+      <nav className="floating-nav">
+        <a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="text-sm font-bold tracking-[0.12em] uppercase px-3"
+          style={{ color: 'var(--text-primary)' }}
+        >
+          Evocaa
+        </a>
+
+        <div className="flex items-center gap-1 sm:gap-2">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToHash(link.href);
+              }}
+              className={`nav-link hidden sm:inline-flex ${
+                activeSection === link.href ? 'nav-link-active' : ''
+              }`}
+              style={{ color: activeSection === link.href ? undefined : 'var(--text-secondary)' }}
+            >
+              {link.label}
+            </a>
+          ))}
         </div>
       </nav>
 
-      {/* Spacer for fixed nav */}
-      <div className="h-16" aria-hidden="true" />
+      {/* ── Main card panel (floating shell) ── */}
+      <div className="main-card">
+        {/* ── Hero header block ── */}
+        <section className="relative px-5 sm:px-10 pt-8 sm:pt-10">
+          {/* <a
+            href="#"
+            onClick={(e) => e.preventDefault()}
+            className="inline-flex items-center gap-2 text-sm font-medium transition-colors duration-200 w-fit"
+            style={{ color: 'var(--text-muted)' }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+          >
+            <ArrowLeft size={14} />
+            Back to Careers
+          </a> */}
 
-      {/* ── Main card panel ── */}
-      <div className="main-card mb-8">
-        {/* ── Hero ── */}
-        <section className="relative min-h-[85vh] flex flex-col overflow-hidden">
-          <div className="absolute inset-0 overflow-hidden">
+          <div className="mt-10 sm:mt-14">
+            <h1
+              className="hero-title-animate font-bold uppercase leading-[0.95] tracking-[-0.02em]"
+              style={{
+                fontSize: 'clamp(2.5rem, 7vw, 5.5rem)',
+                color: 'var(--text-primary)',
+              }}
+            >
+              Video Editor
+              <br />
+              <span style={{ color: 'var(--accent)' }}>(Full-Time)</span>
+            </h1>
+          </div>
+
+          {/* Meta row — 4-col grid, wraps 2x2 on mobile */}
+          <div className="meta-row-animate mt-10 sm:mt-12">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
+              {META_ITEMS.map((item) => (
+                <div key={item.label} className="flex flex-col gap-1.5">
+                  <span className="section-eyebrow">{item.label}</span>
+                  <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+                    {item.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Hero media block (nested, Ken Burns) ── */}
+        <section className="px-5 sm:px-10 mt-10 sm:mt-12">
+          <div className="hero-media">
             <img
               src={UNSPLASH.hero}
               alt=""
@@ -168,60 +221,9 @@ export default function LandingPage({ onApply }: LandingPageProps) {
               className="absolute inset-0"
               style={{
                 background:
-                  'linear-gradient(to bottom, rgba(11,11,13,0.7) 0%, rgba(11,11,13,0.35) 40%, rgba(11,11,13,0.2) 70%, rgba(20,20,22,1) 100%)',
+                  'linear-gradient(to bottom, rgba(11,11,13,0.2) 0%, rgba(11,11,13,0.1) 50%, rgba(20,20,22,0.6) 100%)',
               }}
             />
-          </div>
-
-          <div className="relative z-10 flex flex-col flex-1 px-5 sm:px-10 pt-8 pb-0">
-            {/* <a
-              href="#"
-              className="inline-flex items-center gap-2 text-sm font-medium transition-colors duration-200 w-fit mb-auto"
-              style={{ color: 'var(--text-muted)' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
-            >
-              <ArrowLeft size={14} />
-              Back to Careers
-            </a> */}
-
-            <div className="flex-1 flex items-center justify-center py-16 sm:py-20">
-              <h1
-                className="hero-title-animate font-bold uppercase text-center leading-[0.95] tracking-[-0.02em]"
-                style={{
-                  fontSize: 'clamp(2.25rem, 6vw + 1rem, 5rem)',
-                  color: 'var(--text-primary)',
-                }}
-              >
-                Video Editor
-                <br />
-                <span style={{ color: 'var(--accent)' }}>(Full-Time)</span>
-              </h1>
-            </div>
-          </div>
-
-          {/* Glass meta row */}
-          <div className="relative z-10 px-5 sm:px-10 pb-8 sm:pb-10 -mb-6 sm:-mb-8">
-            <div className="meta-row-animate glass-meta mx-auto max-w-3xl px-5 sm:px-6 py-5 sm:py-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:items-stretch lg:justify-between gap-5 sm:gap-6 lg:gap-0">
-                {[
-                  { label: 'Date Posted', value: 'Jul 31, 2026' },
-                  { label: 'Team', value: 'Content & Marketing' },
-                  { label: 'Location', value: 'Coimbatore (Office)' },
-                  { label: 'Type', value: 'Full-Time' },
-                ].map((item, i, arr) => (
-                  <React.Fragment key={item.label}>
-                    <MetaCell label={item.label} value={item.value} />
-                    {i < arr.length - 1 && (
-                      <div
-                        className="meta-divider hidden lg:block mx-6"
-                        aria-hidden="true"
-                      />
-                    )}
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
           </div>
         </section>
 
@@ -379,48 +381,33 @@ export default function LandingPage({ onApply }: LandingPageProps) {
           </div>
         </section>
 
-        {/* ── CTA Band ── */}
-        <section className="relative py-24 sm:py-32 overflow-hidden">
-          <div className="absolute inset-0">
-            <img
-              src={UNSPLASH.cta}
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{ filter: 'saturate(0.4) brightness(0.35)' }}
-            />
-            <div
-              className="absolute inset-0"
+        {/* ── CTA Band (nested elevated panel) ── */}
+        <section className="px-5 sm:px-10 pb-16 sm:pb-20">
+          <div
+            className="reveal rounded-[20px] px-6 sm:px-12 py-12 sm:py-16 text-center"
+            style={{ background: 'var(--bg-elevated)' }}
+          >
+            <h2
+              className="font-bold uppercase tracking-[-0.02em] mb-4"
               style={{
-                background:
-                  'linear-gradient(to bottom, rgba(11,11,13,0.7) 0%, rgba(11,11,13,0.2) 50%, rgba(11,11,13,0.7) 100%)',
+                fontSize: 'clamp(1.5rem, 4vw, 2rem)',
+                color: 'var(--text-primary)',
               }}
-            />
-          </div>
-
-          <div className="relative z-10 px-5 sm:px-10">
-            <div className="reveal glass-cta max-w-xl mx-auto px-8 sm:px-16 py-10 sm:py-12 text-center">
-              <h2
-                className="font-bold uppercase tracking-[-0.02em] mb-4"
-                style={{
-                  fontSize: 'clamp(1.5rem, 4vw, 2rem)',
-                  color: 'var(--text-primary)',
-                }}
-              >
-                Think You're a Fit?
-              </h2>
-              <p className="body-copy text-base mb-8">
-                Complete the assessment honestly. Only candidates who meet our benchmark will
-                move to the next stage. Shortlisted candidates will be contacted within{' '}
-                <strong style={{ color: 'var(--text-primary)' }}>3 business days</strong>.
-              </p>
-              <button
-                onClick={onApply}
-                className="btn-lime w-full sm:w-auto px-10 py-4 rounded-full text-sm font-bold uppercase tracking-wide inline-flex items-center justify-center gap-2"
-              >
-                Apply Now
-                <ChevronRight size={18} />
-              </button>
-            </div>
+            >
+              Think You're a Fit?
+            </h2>
+            <p className="body-copy text-base mb-8 max-w-xl mx-auto">
+              Complete the assessment honestly. Only candidates who meet our benchmark will
+              move to the next stage. Shortlisted candidates will be contacted within{' '}
+              <strong style={{ color: 'var(--text-primary)' }}>3 business days</strong>.
+            </p>
+            <button
+              onClick={onApply}
+              className="btn-lime w-full sm:w-auto px-10 py-4 rounded-full text-sm font-bold uppercase tracking-wide inline-flex items-center justify-center gap-2"
+            >
+              Apply Now
+              <ChevronRight size={18} />
+            </button>
           </div>
         </section>
       </div>
