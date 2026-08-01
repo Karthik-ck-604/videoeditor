@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import nodemailer from 'nodemailer';
 import { logger } from '../lib/logger';
+import { sendRecruiterEmail } from '../lib/mailer';
 
 const router = Router();
 
@@ -38,172 +38,84 @@ function scoreWorkStyle(answers: Record<number, string>): number {
   }, 0);
 }
 
-const EMAIL_RETRY_DELAY_MS = 500;
-
 const submissionValue = (value: unknown, fallback = 'Not provided'): string => {
   if (typeof value !== 'string') return fallback;
   const trimmed = value.trim();
   return trimmed || fallback;
 };
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-async function sendRecruiterEmail({
-  subject,
-  text,
-  candidateName,
-}: {
-  subject: string;
-  text: string;
-  candidateName: string;
-}) {
-  const recipient = process.env.RECRUITER_EMAIL;
-  const host = process.env.SMTP_HOST;
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-  const from = process.env.SMTP_FROM || user;
-
-  if (!recipient || !host || !user || !pass || !from) {
-    logger.warn(
-      {
-        candidateName,
-        hasRecruiterEmail: Boolean(recipient),
-        hasSmtpHost: Boolean(host),
-        hasSmtpUser: Boolean(user),
-        hasSmtpPass: Boolean(pass),
-        hasSmtpFrom: Boolean(from),
-      },
-      'Recruiter email was not sent because SMTP configuration is incomplete',
-    );
-    return;
-  }
-
-  const port = Number(process.env.SMTP_PORT ?? 587);
-  const transporter = nodemailer.createTransport({
-    host,
-    port: Number.isFinite(port) ? port : 587,
-    secure: process.env.SMTP_SECURE === 'true',
-    auth: { user, pass },
-  });
-
-  for (let attempt = 1; attempt <= 2; attempt += 1) {
-    try {
-      const result = await transporter.sendMail({ from, to: recipient, subject, text });
-      logger.info(
-        { candidateName, messageId: result.messageId, attempt },
-        'Recruiter notification email sent',
-      );
-      return;
-    } catch (err) {
-      if (attempt === 2) {
-        logger.error({ err, candidateName, attempt }, 'Recruiter notification email failed');
-        return;
-      }
-
-      logger.warn({ err, candidateName, attempt }, 'Recruiter notification email failed; retrying');
-      await delay(EMAIL_RETRY_DELAY_MS);
-    }
-  }
-}
-
 router.post('/submit', async (req, res) => {
   try {
-    const body = req.body;
+    const payload = req.body;
 
     // Recalculate scores server-side (never trust client)
-    const techScore = scoreTech(body.techAnswers || {});
-    const workStyleScore = scoreWorkStyle(body.workStyleAnswers || {});
+    const techScore = scoreTech(payload.techAnswers || {});
+    const workStyleScore = scoreWorkStyle(payload.workStyleAnswers || {});
     // Only Steps 3 and 4 are objectively scorable here. The remaining 40 points
     // are intentionally left for recruiter review; do not infer a /100 total.
-    const autoTotal = techScore + workStyleScore;
+    const autoScore = techScore + workStyleScore;
 
-    const submittedAt = new Date();
-    const timestamp = submittedAt.toISOString();
-    const submittedDisplay = submittedAt.toLocaleString('en-IN', {
-      dateStyle: 'medium',
-      timeStyle: 'medium',
-      timeZoneName: 'short',
-    });
+    // Candidate fields, populated from the actual validated submission payload.
+    const candidate = {
+      fullName: submissionValue(payload.fullName),
+      email: submissionValue(payload.email),
+      mobile: submissionValue(payload.mobile),
+      city: submissionValue(payload.city),
+      portfolio: submissionValue(payload.portfolioLink),
+      resume: payload.hasResume ? 'Attached' : 'Not provided',
+      experience: submissionValue(payload.yearsExperience),
+      software:
+        Array.isArray(payload.softwareUsed) && payload.softwareUsed.length
+          ? payload.softwareUsed.join(', ')
+          : 'Not provided',
+      currentSalary: submissionValue(payload.currentSalary),
+      expectedSalary: submissionValue(payload.expectedSalary),
+      noticePeriod: submissionValue(payload.noticePeriod),
+    };
 
-    // Build HR notification payload
-    const hrPayload = `
-NEW APPLICATION — Video Editor (Full-Time) — Evocaa
+    const subject = `New Assessment Submission — ${candidate.fullName} — Video Editor (Full-Time) — Auto Score: ${autoScore}/60`;
 
-Candidate: ${body.fullName}
-Mobile: ${body.mobile}
-Email: ${body.email}
-City: ${body.city}
-Portfolio: ${body.portfolioLink}
-Resume: ${body.hasResume ? 'attached' : 'not provided'}
-
-Experience: ${body.yearsExperience}
-Software: ${(body.softwareUsed || []).join(', ')}
-Content type: ${body.contentType}
-Current salary: ${body.currentSalary || 'not provided'}
-Expected salary: ${body.expectedSalary || 'not provided'}
-Notice period: ${body.noticePeriod}
-
-Auto Score — Technical (Step 3): ${techScore}/40
-Auto Score — Work Style (Step 4): ${workStyleScore}/20
-Auto Subtotal: ${autoTotal}/60
-
-Portfolio Evaluation (Step 5):
-  Best project: ${body.bestProject}
-  Most proud of: ${body.proudProject}
-  Client strength: ${body.clientStrength}
-
-Final Questions (Step 6):
-  Why Evocaa: ${body.whyEvocaa}
-  Why hire: ${body.whyYou}
-  Skill learning: ${body.skillLearning}
-  Additional: ${body.additionalInfo || 'none'}
-
-Manual Score: Pending Review
-Combined Score: ${autoTotal}/60 + Manual (pending)
-
-Submitted: ${timestamp}
-    `.trim();
-
-    // Keep the full internal payload for operational debugging; the email itself is summary-only.
-    logger.info({ candidateName: body.fullName, hrPayload }, 'Application submission received');
-
-    const fullName = submissionValue(body.fullName);
-    const emailText = `Hi Recruiting Team,
+    const body = `Hi Recruiting Team,
 A candidate has completed the full hiring assessment for Video Editor (Full-Time). Summary below.
 CANDIDATE
 
-Name: ${fullName}
-Email: ${submissionValue(body.email)}
-Mobile: ${submissionValue(body.mobile)}
-City: ${submissionValue(body.city)}
-Portfolio: ${submissionValue(body.portfolioLink)}
-Resume: ${body.hasResume ? 'Attached' : 'Not provided'}
+Name: ${candidate.fullName}
+Email: ${candidate.email}
+Mobile: ${candidate.mobile}
+City: ${candidate.city}
+Portfolio: ${candidate.portfolio}
+Resume: ${candidate.resume}
 
 LOGISTICS
-Experience: ${submissionValue(body.yearsExperience)}
-Software: ${Array.isArray(body.softwareUsed) && body.softwareUsed.length ? body.softwareUsed.join(', ') : 'Not provided'}
-Current Salary: ${submissionValue(body.currentSalary)}
-Expected Salary: ${submissionValue(body.expectedSalary)}
-Notice Period: ${submissionValue(body.noticePeriod)}
+Experience: ${candidate.experience}
+Software: ${candidate.software}
+Current Salary: ${candidate.currentSalary}
+Expected Salary: ${candidate.expectedSalary}
+Notice Period: ${candidate.noticePeriod}
 
 SCORING
 Technical Assessment (Step 3): ${techScore}/40
 Work Style Assessment (Step 4): ${workStyleScore}/20
-Auto Score Subtotal: ${autoTotal}/60
+Auto Score Subtotal: ${autoScore}/60
 
-Submitted: ${submittedDisplay}
+Submitted: ${new Date().toISOString()}
 This is an automated notification from the Evocaa hiring assessment. Please complete manual scoring for the remaining 40 points and update the candidate's status accordingly.`;
 
-    // Deliberately detached: an SMTP outage must not delay or fail the candidate response.
-    void sendRecruiterEmail({
-      candidateName: fullName,
-      subject: `New Assessment Submission — ${fullName} — Video Editor (Full-Time) — Auto Score: ${autoTotal}/60`,
-      text: emailText,
-    });
+    // Email send must never block or fail the candidate-facing response.
+    // sendRecruiterEmail absorbs delivery errors internally and logs them.
+    await sendRecruiterEmail(subject, body);
 
     // Priority band tag (internal only)
-    const band = autoTotal >= 50 ? 'Priority Review' : autoTotal >= 35 ? 'Standard Review' : 'Low Priority';
-    logger.info({ candidateName: fullName, autoTotal, band }, 'Application auto-score calculated');
+    const band =
+      autoScore >= 50
+        ? 'Priority Review'
+        : autoScore >= 35
+          ? 'Standard Review'
+          : 'Low Priority';
+    logger.info(
+      { candidateName: candidate.fullName, autoScore, band },
+      'Application submission processed',
+    );
 
     res.json({
       success: true,
