@@ -1,0 +1,168 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: Evocaa Video Editor Hiring API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: assessment
+    description: Hiring assessment operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /assessment/submit:
+    post:
+      operationId: submitAssessment
+      tags: [assessment]
+      summary: Submit full 6-step hiring assessment
+      description: Receives all assessment steps, auto-scores steps 3 and 4 server-side, stores result, and returns a neutral confirmation. Score is never returned to the candidate.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssessmentSubmission"
+      responses:
+        "201":
+          description: Assessment submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssessmentConfirmation"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    ApiError:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+
+    AssessmentSubmission:
+      type: object
+      required: [step1, step2, step3Answers, step4Answers, step5, step6]
+      properties:
+        step1:
+          $ref: "#/components/schemas/BasicInfo"
+        step2:
+          $ref: "#/components/schemas/ProfessionalInfo"
+        step3Answers:
+          type: array
+          items:
+            type: integer
+          description: "Array of 10 integers (0-based selected option index) for technical assessment questions"
+        step4Answers:
+          type: array
+          items:
+            type: integer
+          description: "Array of 5 integers (0-based selected option index) for work style questions"
+        step5:
+          $ref: "#/components/schemas/PortfolioInfo"
+        step6:
+          $ref: "#/components/schemas/FinalAnswers"
+
+    BasicInfo:
+      type: object
+      required: [fullName, mobileNumber, email, currentCity, portfolioLink]
+      properties:
+        fullName:
+          type: string
+        mobileNumber:
+          type: string
+        email:
+          type: string
+          format: email
+        currentCity:
+          type: string
+        portfolioLink:
+          type: string
+        resumeUrl:
+          type: ["string", "null"]
+          description: Optional resume link or uploaded file URL
+
+    ProfessionalInfo:
+      type: object
+      required: [yearsExperience, softwareUsed, contentType, currentSalary, expectedSalary, noticePeriod]
+      properties:
+        yearsExperience:
+          type: string
+          enum: ["Fresher", "Less than 1 year", "1-2 years", "2-4 years", "4+ years"]
+        softwareUsed:
+          type: array
+          items:
+            type: string
+          description: All editing software the candidate uses regularly
+        contentType:
+          type: string
+        currentSalary:
+          type: string
+        expectedSalary:
+          type: string
+        noticePeriod:
+          type: string
+          enum: ["Immediate", "Within 7 Days", "Within 15 Days", "Within 30 Days", "More than 30 Days"]
+
+    PortfolioInfo:
+      type: object
+      required: [bestEditingProjectLink, proudestProject, employerFeedback]
+      properties:
+        bestEditingProjectLink:
+          type: string
+        proudestProject:
+          type: string
+        employerFeedback:
+          type: string
+
+    FinalAnswers:
+      type: object
+      required: [whyEvocaa, whyYou, skillImproving]
+      properties:
+        whyEvocaa:
+          type: string
+        whyYou:
+          type: string
+        skillImproving:
+          type: string
+        additionalInfo:
+          type: ["string", "null"]
+
+    AssessmentConfirmation:
+      type: object
+      required: [message, candidateName]
+      properties:
+        message:
+          type: string
+        candidateName:
+          type: string
