@@ -46,7 +46,7 @@ function StepHeader({
         </span>
         <div
           className="flex-1 h-1 rounded-full"
-          style={{ background: 'rgba(201,255,61,0.15)' }}
+          style={{ background: 'rgba(232,180,74,0.15)' }}
         >
           <div
             className="progress-bar-fill h-1 rounded-full"
@@ -73,7 +73,7 @@ function StepHeader({
             style={{
               background:
                 i + 1 < step
-                  ? 'rgba(201,255,61,0.3)'
+                  ? 'rgba(232,180,74,0.3)'
                   : i + 1 === step
                   ? 'var(--evocaa-gradient)'
                   : 'rgba(255,255,255,0.06)',
@@ -81,7 +81,7 @@ function StepHeader({
                 i + 1 <= step ? '#0B0B0D' : 'var(--evocaa-muted)',
               border:
                 i + 1 === step
-                  ? '1px solid rgba(201,255,61,0.5)'
+                  ? '1px solid rgba(232,180,74,0.5)'
                   : '1px solid transparent',
             }}
           >
@@ -208,8 +208,9 @@ function NavButtons({
   isLast,
   isSubmitting,
   nextLabel,
-  hasAnswered,
-  isLastQuestion,
+  answeredCount,
+  totalQuestions,
+  isFinalStep,
 }: {
   onBack: () => void;
   onNext: () => void;
@@ -217,12 +218,14 @@ function NavButtons({
   isLast?: boolean;
   isSubmitting?: boolean;
   nextLabel?: string;
-  hasAnswered?: boolean;
-  isLastQuestion?: boolean;
+  answeredCount?: number;
+  totalQuestions?: number;
+  isFinalStep?: boolean;
 }) {
-  const isQuizStep = hasAnswered !== undefined;
-  const isBlocked = isQuizStep && !hasAnswered;
-  const isFinal = isQuizStep && hasAnswered && isLastQuestion;
+  const isQuizStep = answeredCount !== undefined && totalQuestions !== undefined;
+  const isComplete = isQuizStep && answeredCount === totalQuestions;
+  const isBlocked = isQuizStep && !isComplete;
+  const isFinal = isQuizStep && isComplete && isFinalStep;
 
   const btnClass = isBlocked
     ? 'btn-quiz-blocked'
@@ -536,7 +539,7 @@ function Step2({
                   : 'rgba(255,255,255,0.06)',
               border:
                 data.yearsExperience === opt
-                  ? '1px solid rgba(201,255,61,0.5)'
+                  ? '1px solid rgba(232,180,74,0.5)'
                   : '1px solid var(--evocaa-border)',
               color:
                 data.yearsExperience === opt
@@ -591,7 +594,7 @@ function Step2({
                       : 'rgba(255,255,255,0.06)',
                   border:
                     data.contentType === opt
-                      ? '1px solid rgba(201,255,61,0.5)'
+                      ? '1px solid rgba(232,180,74,0.5)'
                       : '1px solid var(--evocaa-border)',
                   color:
                     data.contentType === opt ? '#0B0B0D' : 'var(--evocaa-text)',
@@ -640,7 +643,7 @@ function Step2({
                       : 'rgba(255,255,255,0.06)',
                   border:
                     data.noticePeriod === opt
-                      ? '1px solid rgba(201,255,61,0.5)'
+                      ? '1px solid rgba(232,180,74,0.5)'
                       : '1px solid var(--evocaa-border)',
                   color:
                     data.noticePeriod === opt ? '#0B0B0D' : 'var(--evocaa-text)',
@@ -717,11 +720,11 @@ function Step3({
                 data.tech[i] !== undefined
                   ? 'var(--evocaa-gradient)'
                   : i === currentQ
-                  ? 'rgba(201,255,61,0.3)'
+                  ? 'rgba(232,180,74,0.3)'
                   : 'rgba(255,255,255,0.06)',
               color: data.tech[i] !== undefined || i === currentQ ? '#0B0B0D' : 'var(--evocaa-muted)',
               border:
-                i === currentQ ? '2px solid rgba(201,255,61,0.6)' : '1px solid var(--evocaa-border)',
+                i === currentQ ? '2px solid rgba(232,180,74,0.6)' : '1px solid var(--evocaa-border)',
               fontFamily: 'var(--app-font-mono)',
             }}
           >
@@ -809,8 +812,8 @@ function Step3({
       <NavButtons
         onBack={onBack}
         onNext={handleNext}
-        hasAnswered={Boolean(data.tech[currentQ])}
-        isLastQuestion={currentQ === total - 1}
+        answeredCount={answered}
+        totalQuestions={total}
       />
     </div>
   );
@@ -873,7 +876,7 @@ function Step4({
                 data.workStyle[i] !== undefined
                   ? 'var(--evocaa-gradient)'
                   : i === currentQ
-                  ? 'rgba(201,255,61,0.3)'
+                  ? 'rgba(232,180,74,0.3)'
                   : 'rgba(255,255,255,0.06)',
               color:
                 data.workStyle[i] !== undefined || i === currentQ
@@ -881,7 +884,7 @@ function Step4({
                   : 'var(--evocaa-muted)',
               border:
                 i === currentQ
-                  ? '2px solid rgba(201,255,61,0.6)'
+                  ? '2px solid rgba(232,180,74,0.6)'
                   : '1px solid var(--evocaa-border)',
               fontFamily: 'var(--app-font-mono)',
             }}
@@ -965,8 +968,8 @@ function Step4({
       <NavButtons
         onBack={onBack}
         onNext={handleNext}
-        hasAnswered={Boolean(data.workStyle[currentQ])}
-        isLastQuestion={currentQ === total - 1}
+        answeredCount={answered}
+        totalQuestions={total}
       />
     </div>
   );
@@ -1187,7 +1190,7 @@ export default function Assessment({
         <div
           className="max-w-lg w-full text-center glow-card p-10"
           style={{
-            background: 'rgba(201,255,61,0.06)',
+            background: 'rgba(232,180,74,0.06)',
           }}
         >
           <div
@@ -1269,7 +1272,7 @@ export default function Assessment({
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'radial-gradient(ellipse 70% 60% at 50% 30%, rgba(201,255,61,0.1) 0%, transparent 70%)',
+            background: 'radial-gradient(ellipse 70% 60% at 50% 30%, rgba(232,180,74,0.1) 0%, transparent 70%)',
           }}
         />
 

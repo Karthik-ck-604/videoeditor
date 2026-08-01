@@ -85,8 +85,8 @@
   --popover-foreground: 60 5% 96%;
   --popover-border: 240 5% 18%;
 
-  /* Violet-blue accent as primary */
-  --primary: 255 100% 68%;        /* #7C5CFF violet */
+  /* Warm gold accent */
+  --primary: 38 76% 61%;          /* #E8B44A warm gold */
   --primary-foreground: 0 0% 100%;
 
   --secondary: 240 6% 10%;
@@ -95,7 +95,7 @@
   --muted: 240 5% 14%;
   --muted-foreground: 240 5% 58%;  /* #9A9AA2 */
 
-  --accent: 255 100% 68%;
+  --accent: 38 76% 61%;
   --accent-foreground: 0 0% 100%;
 
   --destructive: 0 72% 51%;
@@ -152,8 +152,8 @@
   --text-primary: #F5F5F3;
   --text-secondary: #A8A8AC;
   --text-muted: #6E6E73;
-  --accent: #C9FF3D;
-  --accent-dim: #8FBF2A;
+  --accent: #E8B44A;
+  --accent-dim: #B8893A;
   --divider: rgba(255, 255, 255, 0.08);
   --glass-bg: rgba(255, 255, 255, 0.06);
   --glass-border: rgba(255, 255, 255, 0.14);
@@ -162,20 +162,20 @@
   --radius-card: 28px;
   --radius-panel: 20px;
 
-  /* Legacy aliases for assessment flow — now using lime accent */
+  /* Legacy aliases for assessment flow — now using warm gold accent */
   --evocaa-bg: var(--bg-page);
   --evocaa-bg-alt: var(--bg-card);
   --evocaa-bg-card: var(--bg-elevated);
   --evocaa-text: var(--text-primary);
   --evocaa-muted: var(--text-secondary);
   --evocaa-border: rgba(255, 255, 255, 0.12);
-  --evocaa-accent: #C9FF3D;
-  --evocaa-accent-dim: #8FBF2A;
-  --evocaa-gradient: linear-gradient(135deg, #C9FF3D 0%, #8FBF2A 100%);
-  --evocaa-gradient-glow: linear-gradient(135deg, rgba(201, 255, 61, 0.3) 0%, rgba(143, 191, 42, 0.3) 100%);
-  --evocaa-glow-small: 0 0 20px rgba(201, 255, 61, 0.25);
-  --evocaa-glow-medium: 0 0 40px rgba(201, 255, 61, 0.3);
-  --evocaa-glow-large: 0 0 80px rgba(201, 255, 61, 0.2);
+  --evocaa-accent: #E8B44A;
+  --evocaa-accent-dim: #B8893A;
+  --evocaa-gradient: linear-gradient(135deg, #E8B44A 0%, #B8893A 100%);
+  --evocaa-gradient-glow: linear-gradient(135deg, rgba(232, 180, 74, 0.3) 0%, rgba(184, 137, 58, 0.3) 100%);
+  --evocaa-glow-small: 0 0 20px rgba(232, 180, 74, 0.25);
+  --evocaa-glow-medium: 0 0 40px rgba(232, 180, 74, 0.3);
+  --evocaa-glow-large: 0 0 80px rgba(232, 180, 74, 0.2);
 }
 
 @layer base {
@@ -195,13 +195,14 @@
     background-color: var(--bg-page);
     color: var(--text-primary);
     font-family: var(--app-font-sans);
+    min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
 
   ::selection {
-    background: rgba(201, 255, 61, 0.25);
+    background: rgba(232, 180, 74, 0.25);
     color: #fff;
   }
 
@@ -234,25 +235,20 @@
   background-size: 200px 200px;
 }
 
-/* ── Textured page backdrop — sits behind the glass card so backdrop-filter has something to blur ── */
-.page-backdrop {
+/* Fixed page backdrop — independent of the document's scroll height. */
+.page-bg {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: -1;
+  background-color: var(--bg-page);
+  background-image: radial-gradient(
+    circle at 100% 100%,
+    rgba(232, 180, 74, 0.28) 0%,
+    rgba(232, 180, 74, 0.12) 25%,
+    transparent 55%
+  );
+  background-repeat: no-repeat;
   pointer-events: none;
-  background:
-    radial-gradient(circle at 20% 0%, rgba(201, 255, 61, 0.07), transparent 45%),
-    radial-gradient(circle at 85% 15%, rgba(124, 92, 255, 0.10), transparent 50%),
-    linear-gradient(180deg, #0B0B0D 0%, #101013 100%);
-}
-
-.page-backdrop::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
 }
 
 /* ── Gradient text ── */
@@ -291,7 +287,7 @@
 
 .btn-gradient:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(201, 255, 61, 0.4), 0 4px 12px rgba(143, 191, 42, 0.3);
+  box-shadow: 0 8px 30px rgba(232, 180, 74, 0.4), 0 4px 12px rgba(184, 137, 58, 0.3);
 }
 
 .btn-gradient:active {
@@ -301,15 +297,15 @@
 /* ── Glowing card ── */
 .glow-card {
   background: var(--evocaa-bg-card);
-  border: 1px solid rgba(201, 255, 61, 0.2);
+  border: 1px solid rgba(232, 180, 74, 0.2);
   border-radius: 1.5rem;
-  box-shadow: 0 0 0 1px rgba(201, 255, 61, 0.08), 0 8px 32px rgba(0,0,0,0.5);
+  box-shadow: 0 0 0 1px rgba(232, 180, 74, 0.08), 0 8px 32px rgba(0,0,0,0.5);
   transition: box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
 .glow-card:hover {
-  border-color: rgba(201, 255, 61, 0.4);
-  box-shadow: 0 0 40px rgba(201, 255, 61, 0.15), 0 8px 32px rgba(0,0,0,0.5);
+  border-color: rgba(232, 180, 74, 0.4);
+  box-shadow: 0 0 40px rgba(232, 180, 74, 0.15), 0 8px 32px rgba(0,0,0,0.5);
 }
 
 /* ── Quiz pill option ── */
@@ -319,8 +315,8 @@
   align-items: center;
   gap: 1rem;
   padding: 0.875rem 1.25rem;
-  background: linear-gradient(135deg, rgba(201, 255, 61, 0.12) 0%, rgba(143, 191, 42, 0.12) 100%);
-  border: 1px solid rgba(201, 255, 61, 0.2);
+  background: linear-gradient(135deg, rgba(232, 180, 74, 0.12) 0%, rgba(184, 137, 58, 0.12) 100%);
+  border: 1px solid rgba(232, 180, 74, 0.2);
   border-radius: 9999px;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -330,15 +326,15 @@
 
 .quiz-option:hover {
   transform: scale(1.02);
-  background: linear-gradient(135deg, rgba(201, 255, 61, 0.22) 0%, rgba(143, 191, 42, 0.22) 100%);
-  border-color: rgba(201, 255, 61, 0.45);
-  box-shadow: 0 0 20px rgba(201, 255, 61, 0.2);
+  background: linear-gradient(135deg, rgba(232, 180, 74, 0.22) 0%, rgba(184, 137, 58, 0.22) 100%);
+  border-color: rgba(232, 180, 74, 0.45);
+  box-shadow: 0 0 20px rgba(232, 180, 74, 0.2);
 }
 
 .quiz-option.selected {
-  background: linear-gradient(135deg, rgba(201, 255, 61, 0.35) 0%, rgba(143, 191, 42, 0.35) 100%);
-  border-color: rgba(201, 255, 61, 0.7);
-  box-shadow: 0 0 24px rgba(201, 255, 61, 0.3);
+  background: linear-gradient(135deg, rgba(232, 180, 74, 0.35) 0%, rgba(184, 137, 58, 0.35) 100%);
+  border-color: rgba(232, 180, 74, 0.7);
+  box-shadow: 0 0 24px rgba(232, 180, 74, 0.3);
 }
 
 .quiz-option.selected .option-badge {
@@ -351,7 +347,7 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: rgba(201, 255, 61, 0.3);
+  background: rgba(232, 180, 74, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -376,20 +372,29 @@
 .main-card {
   position: relative;
   z-index: 1;
+  isolation: isolate;
   background:
-    radial-gradient(circle at 20% 0%, rgba(201, 255, 61, 0.08), transparent 55%),
     linear-gradient(180deg, rgba(20, 20, 22, 0.6) 0%, rgba(28, 28, 31, 0.4) 100%),
-    rgba(20, 20, 22, 0.55);
+    radial-gradient(circle at 100% 0%, rgba(232, 180, 74, 0.06), transparent 45%);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
   margin-inline: clamp(20px, 5.5vw, 96px);
   /* ~48px of page bg visible between floating nav and card top */
   margin-top: clamp(112px, 14vw, 144px);
   margin-bottom: clamp(48px, 8vw, 96px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   overflow: hidden;
+}
+
+.main-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent 38%, rgba(232, 180, 74, 0.04));
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* ── Floating pill nav bar ── */
@@ -431,10 +436,34 @@
 /* ── Hero media block (nested inside card) ── */
 .hero-media {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   border-radius: var(--radius-panel);
   overflow: hidden;
   aspect-ratio: 16 / 9;
   max-height: 70vh;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: none;
+}
+
+.hero-media > img,
+.hero-media > video {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
 }
 
 @media (max-width: 767px) {
@@ -495,8 +524,8 @@
   }
 }
 
-/* ── Lime CTA button ── */
-.btn-lime {
+/* ── Accent CTA button ── */
+.btn-accent {
   background: var(--accent);
   color: #0B0B0D;
   font-weight: 700;
@@ -506,12 +535,12 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-lime:hover {
+.btn-accent:hover {
   transform: scale(1.04);
-  box-shadow: 0 0 32px rgba(201, 255, 61, 0.45), 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 32px rgba(232, 180, 74, 0.45), 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
-.btn-lime:active {
+.btn-accent:active {
   transform: scale(1.01);
 }
 
@@ -552,20 +581,29 @@
   from {
     opacity: 0;
     transform: translateY(16px);
-    backdrop-filter: blur(0);
-    -webkit-backdrop-filter: blur(0);
   }
   to {
     opacity: 1;
     transform: translateY(0);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
   }
 }
 
 .meta-row-animate {
   opacity: 0;
   animation: metaRowIn 600ms ease-out 500ms forwards;
+}
+
+/* ── Hero metadata typography ── */
+.hero-meta-label {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.hero-meta-value {
+  font-size: 0.875rem;
+  font-weight: 400;
 }
 
 /* ── Section typography helpers ── */
@@ -648,8 +686,8 @@
 /* ── Radial glow bg for quiz ── */
 .quiz-glow-bg {
   background:
-    radial-gradient(circle at 15% 0%, rgba(201, 255, 61, 0.10), transparent 55%),
-    radial-gradient(circle at 100% 100%, rgba(201, 255, 61, 0.05), transparent 60%),
+    radial-gradient(circle at 15% 0%, rgba(232, 180, 74, 0.10), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(232, 180, 74, 0.05), transparent 60%),
     linear-gradient(180deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
 }
 
@@ -659,24 +697,26 @@
   border: 1px solid var(--divider);
   color: var(--text-muted);
   cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
   transition: none;
 }
 
 /* ── Quiz Continue button — final/submit state ── */
 .btn-quiz-final {
-  background: linear-gradient(135deg, var(--accent) 0%, #E4FF8A 100%);
+  background: linear-gradient(135deg, var(--accent) 0%, #F4D58D 100%);
   border: none;
   color: #0B0B0D;
   font-weight: 700;
   letter-spacing: 0.02em;
   cursor: pointer;
-  box-shadow: 0 0 24px rgba(201, 255, 61, 0.35);
+  box-shadow: 0 0 24px rgba(232, 180, 74, 0.35);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-quiz-final:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 32px rgba(201, 255, 61, 0.5), 0 8px 30px rgba(201, 255, 61, 0.4);
+  box-shadow: 0 0 32px rgba(232, 180, 74, 0.5), 0 8px 30px rgba(232, 180, 74, 0.4);
 }
 
 .btn-quiz-final:active {
@@ -688,7 +728,7 @@
   background: var(--evocaa-gradient);
   transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 9999px;
-  box-shadow: 0 0 12px rgba(201, 255, 61, 0.5);
+  box-shadow: 0 0 12px rgba(232, 180, 74, 0.5);
 }
 
 /* ── Sticky nav ── */
@@ -734,7 +774,7 @@
 .quote-callout {
   border-left: 3px solid;
   border-image: var(--evocaa-gradient) 1;
-  background: rgba(201, 255, 61, 0.05);
+  background: rgba(232, 180, 74, 0.05);
   padding: 1.5rem 2rem;
   border-radius: 0 1rem 1rem 0;
 }
@@ -761,7 +801,7 @@
 /* ── Textarea / input dark styled ── */
 .dark-input {
   background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(201, 255, 61, 0.25);
+  border: 1px solid rgba(232, 180, 74, 0.25);
   border-radius: 0.75rem;
   color: var(--evocaa-text);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -773,8 +813,8 @@
 
 .dark-input:focus {
   outline: none;
-  border-color: rgba(201, 255, 61, 0.6);
-  box-shadow: 0 0 0 3px rgba(201, 255, 61, 0.12);
+  border-color: rgba(232, 180, 74, 0.6);
+  box-shadow: 0 0 0 3px rgba(232, 180, 74, 0.12);
 }
 
 .dark-input::placeholder {
@@ -783,19 +823,19 @@
 
 /* ── File dropzone ── */
 .dropzone {
-  border: 2px dashed rgba(201, 255, 61, 0.3);
+  border: 2px dashed rgba(232, 180, 74, 0.3);
   border-radius: 0.75rem;
   padding: 2rem;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: rgba(201, 255, 61, 0.04);
+  background: rgba(232, 180, 74, 0.04);
 }
 
 .dropzone:hover,
 .dropzone.active {
-  border-color: rgba(201, 255, 61, 0.6);
-  background: rgba(201, 255, 61, 0.08);
+  border-color: rgba(232, 180, 74, 0.6);
+  background: rgba(232, 180, 74, 0.08);
 }
 
 /* ── Error message ── */
@@ -812,8 +852,8 @@
   align-items: center;
   gap: 1rem;
   padding: 0.875rem 1.25rem;
-  background: linear-gradient(135deg, rgba(201, 255, 61, 0.08) 0%, rgba(143, 191, 42, 0.08) 100%);
-  border: 1px solid rgba(201, 255, 61, 0.15);
+  background: linear-gradient(135deg, rgba(232, 180, 74, 0.08) 0%, rgba(184, 137, 58, 0.08) 100%);
+  border: 1px solid rgba(232, 180, 74, 0.15);
   border-radius: 9999px;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -821,20 +861,20 @@
 }
 
 .multi-option:hover {
-  background: linear-gradient(135deg, rgba(201, 255, 61, 0.18) 0%, rgba(143, 191, 42, 0.18) 100%);
-  border-color: rgba(201, 255, 61, 0.4);
+  background: linear-gradient(135deg, rgba(232, 180, 74, 0.18) 0%, rgba(184, 137, 58, 0.18) 100%);
+  border-color: rgba(232, 180, 74, 0.4);
 }
 
 .multi-option.selected {
-  background: linear-gradient(135deg, rgba(201, 255, 61, 0.3) 0%, rgba(143, 191, 42, 0.3) 100%);
-  border-color: rgba(201, 255, 61, 0.6);
+  background: linear-gradient(135deg, rgba(232, 180, 74, 0.3) 0%, rgba(184, 137, 58, 0.3) 100%);
+  border-color: rgba(232, 180, 74, 0.6);
 }
 
 .multi-check {
   width: 20px;
   height: 20px;
   border-radius: 5px;
-  border: 1.5px solid rgba(201, 255, 61, 0.5);
+  border: 1.5px solid rgba(232, 180, 74, 0.5);
   background: transparent;
   display: flex;
   align-items: center;
@@ -848,6 +888,57 @@
   border-color: transparent;
 }
 
+/* Small-screen safeguards: retain side gutters, touch targets, and readable type. */
+@media (max-width: 639px) {
+  .main-card {
+    margin-inline: 12px;
+    margin-top: 88px;
+    margin-bottom: 32px;
+    border-radius: 20px;
+  }
+
+  .floating-nav {
+    margin-inline: 12px;
+    min-height: 48px;
+    padding-inline: 0.5rem;
+  }
+
+  .floating-nav > div {
+    display: none;
+  }
+
+  .hero-title-animate {
+    font-size: clamp(2rem, 9vw, 2.5rem) !important;
+    letter-spacing: 0.035em !important;
+    overflow-wrap: anywhere;
+  }
+
+  .content-column {
+    padding-inline: 20px;
+  }
+
+  .glass-requirement {
+    padding: 24px;
+  }
+
+  .quiz-option,
+  .multi-option {
+    min-height: 52px;
+    padding: 0.75rem 1rem;
+    gap: 0.75rem;
+    border-radius: 18px;
+  }
+
+  .option-badge {
+    width: 32px;
+    height: 32px;
+  }
+
+  .dropzone {
+    padding: 1.5rem 1rem;
+  }
+}
+
 /* ── Reduce motion ── */
 @media (prefers-reduced-motion: reduce) {
   .hero-img,
@@ -855,7 +946,7 @@
   .hero-title-animate,
   .meta-row-animate { opacity: 1; animation: none; transform: none; }
   .reveal { transition: none; opacity: 1; }
-  .btn-lime:hover,
+  .btn-accent:hover,
   .btn-gradient:hover { transform: none; }
   .glass-requirement:hover { transform: none; }
   .quiz-option:hover { transform: none; }

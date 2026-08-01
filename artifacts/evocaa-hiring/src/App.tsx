@@ -5,7 +5,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { useToast } from '@/hooks/use-toast';
 import LandingPage from '@/pages/LandingPage';
 import Assessment from '@/pages/Assessment';
-import { AssessmentData, INITIAL_DATA, calcTechScore, calcWorkStyleScore } from '@/lib/assessmentData';
+import { AssessmentData, INITIAL_DATA } from '@/lib/assessmentData';
 import { initLenis, getLenis } from '@/lib/lenis';
 
 const queryClient = new QueryClient();
@@ -67,9 +67,6 @@ function AppContent() {
   const handleSubmit = useCallback(async () => {
     setIsSubmitting(true);
     try {
-      const techScore = calcTechScore(data.tech);
-      const workStyleScore = calcWorkStyleScore(data.workStyle);
-
       const payload = {
         // Basic info
         fullName: data.fullName,
@@ -85,10 +82,6 @@ function AppContent() {
         currentSalary: data.currentSalary,
         expectedSalary: data.expectedSalary,
         noticePeriod: data.noticePeriod,
-        // Scores (internal)
-        techScore,
-        workStyleScore,
-        autoTotal: techScore + workStyleScore,
         // Tech answers
         techAnswers: data.tech,
         // Work style answers

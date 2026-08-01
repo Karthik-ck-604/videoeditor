@@ -125,9 +125,9 @@ export default function LandingPage({ onApply }: LandingPageProps) {
   }, []);
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--bg-page)' }}>
-      {/* Textured backdrop — sits behind the glass card so backdrop-filter has something to blur */}
-      <div className="page-backdrop" aria-hidden />
+    <>
+      <div className="page-bg" aria-hidden="true" />
+      <div className="min-h-screen">
       {/* Full-page grain overlay — card reads as floating above textured backdrop */}
       <div className="grain-overlay" aria-hidden />
 
@@ -169,29 +169,15 @@ export default function LandingPage({ onApply }: LandingPageProps) {
       <div className="main-card">
         {/* ── Hero header block ── */}
         <section className="relative px-5 sm:px-10 pt-8 sm:pt-10">
-          {/* <a
-            href="#"
-            onClick={(e) => e.preventDefault()}
-            className="inline-flex items-center gap-2 text-sm font-medium transition-colors duration-200 w-fit"
-            style={{ color: 'var(--text-muted)' }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
-          >
-            <ArrowLeft size={14} />
-            Back to Careers
-          </a> */}
-
           <div className="mt-10 sm:mt-14">
             <h1
-              className="hero-title-animate font-bold uppercase leading-[0.95] tracking-[-0.02em]"
+              className="hero-title-animate font-light uppercase leading-[0.95] tracking-[0.05em]"
               style={{
                 fontSize: 'clamp(2.5rem, 7vw, 5.5rem)',
                 color: 'var(--text-primary)',
               }}
             >
               Video Editor
-              <br />
-              <span style={{ color: 'var(--accent)' }}>(Full-Time)</span>
             </h1>
           </div>
 
@@ -200,8 +186,8 @@ export default function LandingPage({ onApply }: LandingPageProps) {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
               {META_ITEMS.map((item) => (
                 <div key={item.label} className="flex flex-col gap-1.5">
-                  <span className="section-eyebrow">{item.label}</span>
-                  <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+                  <span className="hero-meta-label">{item.label}</span>
+                  <span className="hero-meta-value" style={{ color: 'var(--text-primary)' }}>
                     {item.value}
                   </span>
                 </div>
@@ -216,8 +202,12 @@ export default function LandingPage({ onApply }: LandingPageProps) {
             <img
               src={UNSPLASH.hero}
               alt=""
-              className="hero-img-cinematic absolute inset-0 w-full h-full object-cover"
-              style={{ filter: 'saturate(0.5) brightness(0.5)' }}
+              className="hero-img-cinematic w-full max-w-full h-full object-cover"
+              style={{
+                filter: 'saturate(0.5) brightness(0.5)',
+                objectPosition: 'center center',
+                opacity: 0.92,
+              }}
             />
             <div
               className="absolute inset-0"
@@ -386,36 +376,50 @@ export default function LandingPage({ onApply }: LandingPageProps) {
         {/* ── CTA Band (nested elevated panel) ── */}
         <section className="px-5 sm:px-10 pb-16 sm:pb-20">
           <div
-            className="reveal rounded-[20px] px-6 sm:px-12 py-12 sm:py-16 text-center"
+            className="reveal rounded-[20px] px-6 sm:px-12 py-12 sm:py-16 text-center relative overflow-hidden"
             style={{ background: 'var(--bg-elevated)' }}
           >
-            <h2
-              className="font-bold uppercase tracking-[-0.02em] mb-4"
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 opacity-15"
               style={{
-                fontSize: 'clamp(1.5rem, 4vw, 2rem)',
-                color: 'var(--text-primary)',
+                backgroundImage: `url(${UNSPLASH.cta})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+                filter: 'saturate(0.45) brightness(0.8) blur(0.3px)',
+                mixBlendMode: 'screen',
               }}
-            >
-              Think You're a Fit?
-            </h2>
-            <p className="body-copy text-base mb-8 max-w-xl mx-auto">
-              Complete the assessment honestly. Only candidates who meet our benchmark will
-              move to the next stage. Shortlisted candidates will be contacted within{' '}
-              <strong style={{ color: 'var(--text-primary)' }}>3 business days</strong>.
-            </p>
-            <button
-              onClick={onApply}
-              className="btn-lime w-full sm:w-auto px-10 py-4 rounded-full text-sm font-bold uppercase tracking-wide inline-flex items-center justify-center gap-2"
-            >
-              Apply Now
-              <ChevronRight size={18} />
-            </button>
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[rgba(11,11,13,0.12)] via-[rgba(11,11,13,0.28)] to-[rgba(11,11,13,0.72)]" />
+            <div className="relative z-10">
+              <h2
+                className="font-bold uppercase tracking-[-0.02em] mb-4"
+                style={{
+                  fontSize: 'clamp(1.5rem, 4vw, 2rem)',
+                  color: 'var(--text-primary)',
+                }}
+              >
+                Think You're a Fit?
+              </h2>
+              <p className="body-copy text-base mb-8 max-w-xl mx-auto">
+                Complete the assessment honestly. Only candidates who meet our benchmark will
+                move to the next stage. Shortlisted candidates will be contacted within{' '}
+                <strong style={{ color: 'var(--text-primary)' }}>3 business days</strong>.
+              </p>
+              <button
+                onClick={onApply}
+                className="btn-accent w-full sm:w-auto px-10 py-4 rounded-full text-sm font-bold uppercase tracking-wide inline-flex items-center justify-center gap-2"
+              >
+                Apply Now
+                <ChevronRight size={18} />
+              </button>
+            </div>
           </div>
         </section>
       </div>
 
       {/* ── Footer (outside card) ── */}
-      <footer className="py-10 px-5">
+      <footer className="relative z-10 py-10 px-5">
         <div className="max-w-3xl mx-auto text-center space-y-5">
           <p
             className="text-sm font-bold tracking-[0.12em] uppercase"
@@ -450,6 +454,7 @@ export default function LandingPage({ onApply }: LandingPageProps) {
           </p>
         </div>
       </footer>
-    </div>
+      </div>
+    </>
   );
 }

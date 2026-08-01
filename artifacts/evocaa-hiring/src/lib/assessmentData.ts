@@ -57,7 +57,8 @@ export const INITIAL_DATA: AssessmentData = {
   additionalInfo: '',
 };
 
-// ── Technical Assessment Answer Key (internal only) ──
+// Question text and options are intentionally client-side. Correct answers live only in
+// the API server, which re-scores every submission and is the score source of truth.
 export const TECH_QUESTIONS = [
   {
     q: 'Which software is primarily used for motion graphics?',
@@ -67,14 +68,10 @@ export const TECH_QUESTIONS = [
       'Adobe Photoshop',
       'Canva',
     ],
-    correct: 'Adobe After Effects',
-    points: 4,
   },
   {
     q: 'Which aspect ratio is best for Instagram Reels?',
     options: ['16:9', '9:16', '1:1', '4:3'],
-    correct: '9:16',
-    points: 4,
   },
   {
     q: 'What is the main purpose of B-roll footage?',
@@ -84,14 +81,10 @@ export const TECH_QUESTIONS = [
       'Add background music',
       'Reduce file size',
     ],
-    correct: 'Support the main story visually',
-    points: 4,
   },
   {
     q: 'Which export format is most commonly used for social media?',
     options: ['MP4 (H.264)', 'MOV', 'AVI', 'GIF'],
-    correct: 'MP4 (H.264)',
-    points: 4,
   },
   {
     q: 'What is the most important goal of the first 3 seconds of a short-form video?',
@@ -101,8 +94,6 @@ export const TECH_QUESTIONS = [
       "Grab the viewer's attention",
       'Show credits',
     ],
-    correct: "Grab the viewer's attention",
-    points: 4,
   },
   {
     q: 'Why are captions important in short-form content?',
@@ -112,20 +103,14 @@ export const TECH_QUESTIONS = [
       'They improve camera quality',
       'They make exporting faster',
     ],
-    correct: 'They improve viewer retention and accessibility',
-    points: 4,
   },
   {
     q: 'Which editing technique removes awkward pauses while keeping the video engaging?',
     options: ['Color grading', 'Jump cuts', 'Masking', 'Tracking'],
-    correct: 'Jump cuts',
-    points: 4,
   },
   {
     q: 'Which audio issue should always be fixed before exporting?',
     options: ['Low saturation', 'Background noise', 'Frame rate', 'White balance'],
-    correct: 'Background noise',
-    points: 4,
   },
   {
     q: 'What is the purpose of keyframes?',
@@ -135,8 +120,6 @@ export const TECH_QUESTIONS = [
       'Compress videos',
       'Improve internet speed',
     ],
-    correct: 'Animate properties over time',
-    points: 4,
   },
   {
     q: 'What is more important in a marketing video?',
@@ -146,8 +129,6 @@ export const TECH_QUESTIONS = [
       'Expensive camera footage',
       'Slow-motion effects',
     ],
-    correct: 'Storytelling and audience retention',
-    points: 4,
   },
 ];
 
@@ -160,8 +141,6 @@ export const WORK_STYLE_QUESTIONS = [
       'Ignore the request',
       'Deliver the same version again',
     ],
-    correct: 'Understand the feedback and improve the edit',
-    points: 4,
   },
   {
     q: "You realize you cannot meet today's deadline. What should you do first?",
@@ -171,8 +150,6 @@ export const WORK_STYLE_QUESTIONS = [
       'Ignore the deadline',
       'Submit unfinished work',
     ],
-    correct: 'Inform the team immediately and suggest a solution',
-    points: 4,
   },
   {
     q: 'You receive constructive feedback on your edit. How do you respond?',
@@ -182,8 +159,6 @@ export const WORK_STYLE_QUESTIONS = [
       'Ignore the feedback',
       'Leave the project',
     ],
-    correct: 'Review the feedback and improve the video',
-    points: 4,
   },
   {
     q: 'Your teammate is struggling with a project and asks for help. What do you do?',
@@ -193,8 +168,6 @@ export const WORK_STYLE_QUESTIONS = [
       'Tell them to figure it out themselves',
       'Report them to the manager',
     ],
-    correct: "Help if you're available and communicate with the team",
-    points: 4,
   },
   {
     q: 'Which statement best describes your editing approach?',
@@ -204,22 +177,8 @@ export const WORK_STYLE_QUESTIONS = [
       'I only focus on visual effects.',
       'I only follow trends.',
     ],
-    correct: 'I edit to help the audience understand and take action.',
-    points: 4,
   },
 ];
-
-export function calcTechScore(answers: Record<number, string>): number {
-  return TECH_QUESTIONS.reduce((sum, q, i) => {
-    return sum + (answers[i] === q.correct ? q.points : 0);
-  }, 0);
-}
-
-export function calcWorkStyleScore(answers: Record<number, string>): number {
-  return WORK_STYLE_QUESTIONS.reduce((sum, q, i) => {
-    return sum + (answers[i] === q.correct ? q.points : 0);
-  }, 0);
-}
 
 export const STEP_NAMES = [
   'Basic Info',
