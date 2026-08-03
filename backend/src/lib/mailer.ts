@@ -10,15 +10,19 @@ import { logger } from './logger'
 // arbitrary recipients.
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-export async function sendRecruiterEmail(subject: string, body: string) {
+export async function sendRecruiterEmail(
+  subject: string,
+  body: string,
+  toEmail: string = process.env.RECRUITER_EMAIL!,
+) {
   try {
     const result = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL!,
-      to: process.env.RECRUITER_EMAIL!,
+      to: toEmail,
       subject,
       text: body,
     })
-    logger.info({ resendId: result.data?.id }, 'Recruiter email sent')
+    logger.info({ resendId: result.data?.id, to: toEmail }, 'Recruiter email sent')
     return true
   } catch (err) {
     logger.error({ err }, 'Failed to send recruiter email')

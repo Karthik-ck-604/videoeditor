@@ -1,39 +1,18 @@
 import { Router } from 'express';
 import { logger } from '../lib/logger';
 import { sendRecruiterEmail } from '../lib/mailer';
+import { getRoleBySlug } from './roles';
 
 const router = Router();
 
-// ── Internal answer keys (server-only, never sent to client) ──
-const TECH_ANSWERS = [
-  'Adobe After Effects',
-  '9:16',
-  'Support the main story visually',
-  'MP4 (H.264)',
-  "Grab the viewer's attention",
-  'They improve viewer retention and accessibility',
-  'Jump cuts',
-  'Background noise',
-  'Animate properties over time',
-  'Storytelling and audience retention',
-];
-
-const WORK_STYLE_ANSWERS = [
-  'Understand the feedback and improve the edit',
-  'Inform the team immediately and suggest a solution',
-  'Review the feedback and improve the video',
-  "Help if you're available and communicate with the team",
-  'I edit to help the audience understand and take action.',
-];
-
-function scoreTech(answers: Record<number, string>): number {
-  return TECH_ANSWERS.reduce((sum, correct, i) => {
+function scoreTech(answers: Record<number, string>, correctAnswers: string[]): number {
+  return correctAnswers.reduce((sum, correct, i) => {
     return sum + (answers[i] === correct ? 4 : 0);
   }, 0);
 }
 
-function scoreWorkStyle(answers: Record<number, string>): number {
-  return WORK_STYLE_ANSWERS.reduce((sum, correct, i) => {
+function scoreWorkStyle(answers: Record<number, string>, correctAnswers: string[]): number {
+  return correctAnswers.reduce((sum, correct, i) => {
     return sum + (answers[i] === correct ? 4 : 0);
   }, 0);
 }
@@ -48,14 +27,28 @@ router.post('/submit', async (req, res) => {
   try {
     const payload = req.body;
 
-    // Recalculate scores server-side (never trust client)
-    const techScore = scoreTech(payload.techAnswers || {});
-    const workStyleScore = scoreWorkStyle(payload.workStyleAnswers || {});
-    // Only Steps 3 and 4 are objectively scorable here. The remaining 40 points
-    // are intentionally left for recruiter review; do not infer a /100 total.
-    const autoScore = techScore + workStyleScore;
+    // ── Role lookup & validation ──────────────────────────────────────────────
+    const roleSlug = typeof payload.roleSlug === 'string' ? payload.roleSlug.trim() : '';
+    const role = getRoleBySlug(roleSlug);
 
-    // Candidate fields, populated from the actual validated submission payload.
+    if (!role) {
+      logger.warn({ roleSlug }, 'Submission rejected: unrecognised roleSlug');
+      res.status(400).json({
+        success: false,
+        message: `Unknown role: "${roleSlug}". Valid roles are: video-editor, graphic-designer, client-support.`,
+      });
+      return;
+    }
+
+    // ── Server-side scoring (never trust the client) ──────────────────────────
+    const techScore = scoreTech(payload.techAnswers || {}, role.techAnswers);
+    const workStyleScore = scoreWorkStyle(payload.workStyleAnswers || {}, role.workStyleAnswers);
+    // Only Steps 3 and 4 are objectively scorable.
+    // The remaining points are reserved for manual recruiter review.
+    const autoScore = techScore + workStyleScore;
+    const maxAutoScore = (role.techAnswers.length + role.workStyleAnswers.length) * 4;
+
+    // ── Candidate summary ─────────────────────────────────────────────────────
     const candidate = {
       fullName: submissionValue(payload.fullName),
       email: submissionValue(payload.email),
@@ -73,10 +66,14 @@ router.post('/submit', async (req, res) => {
       noticePeriod: submissionValue(payload.noticePeriod),
     };
 
-    const subject = `New Assessment Submission — ${candidate.fullName} — Video Editor (Full-Time) — Auto Score: ${autoScore}/60`;
+    const roleLabel = `${role.title} ${role.subtitle}`;
+
+    // ── Recruiter email ───────────────────────────────────────────────────────
+    const subject = `New Assessment Submission — ${candidate.fullName} — ${roleLabel} — Auto Score: ${autoScore}/${maxAutoScore}`;
 
     const body = `Hi Recruiting Team,
-A candidate has completed the full hiring assessment for Video Editor (Full-Time). Summary below.
+A candidate has completed the full hiring assessment for ${roleLabel}. Summary below.
+
 CANDIDATE
 
 Name: ${candidate.fullName}
@@ -94,26 +91,31 @@ Expected Salary: ${candidate.expectedSalary}
 Notice Period: ${candidate.noticePeriod}
 
 SCORING
-Technical Assessment (Step 3): ${techScore}/40
-Work Style Assessment (Step 4): ${workStyleScore}/20
-Auto Score Subtotal: ${autoScore}/60
+Technical Assessment (Step 3): ${techScore}/${role.techAnswers.length * 4}
+Work Style Assessment (Step 4): ${workStyleScore}/${role.workStyleAnswers.length * 4}
+Auto Score Subtotal: ${autoScore}/${maxAutoScore}
 
 Submitted: ${new Date().toISOString()}
-This is an automated notification from the Evocaa hiring assessment. Please complete manual scoring for the remaining 40 points and update the candidate's status accordingly.`;
+
+This is an automated notification from the Evocaa hiring assessment for the ${roleLabel} role.
+Please complete manual scoring for the remaining points and update the candidate's status accordingly.`;
+
+    // Use role-level override first, then fall back to env var.
+    const toEmail = role.recruiterEmailOverride ?? process.env.RECRUITER_EMAIL!;
 
     // Email send must never block or fail the candidate-facing response.
-    // sendRecruiterEmail absorbs delivery errors internally and logs them.
-    await sendRecruiterEmail(subject, body);
+    await sendRecruiterEmail(subject, body, toEmail);
 
-    // Priority band tag (internal only)
+    // ── Priority band tagging (internal only) ─────────────────────────────────
     const band =
-      autoScore >= 50
+      autoScore >= maxAutoScore * 0.83
         ? 'Priority Review'
-        : autoScore >= 35
+        : autoScore >= maxAutoScore * 0.58
           ? 'Standard Review'
           : 'Low Priority';
+
     logger.info(
-      { candidateName: candidate.fullName, autoScore, band },
+      { candidateName: candidate.fullName, roleSlug, autoScore, maxAutoScore, band },
       'Application submission processed',
     );
 
