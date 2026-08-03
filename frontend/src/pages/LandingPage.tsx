@@ -130,7 +130,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
             }}
           >
             <h2 className="text-2xl font-bold text-white mb-4">Role Not Found</h2>
-            <p className="text-[var(--text-secondary)] mb-6 leading-relaxed">
+            <p className="text-[var(--text-primary)] mb-6 leading-relaxed">
               We couldn't find the job opening you are looking for. It may have been closed or removed.
             </p>
             <Link href="/" className="btn-accent px-8 py-3 rounded-full text-sm font-bold uppercase tracking-wide inline-flex items-center justify-center">
@@ -181,7 +181,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                 }}
                 className={`nav-link hidden sm:inline-flex ${activeSection === link.href ? 'nav-link-active' : ''
                   }`}
-                style={{ color: activeSection === link.href ? undefined : 'var(--text-secondary)' }}
+                style={{ color: activeSection === link.href ? undefined : 'var(--text-primary)' }}
               >
                 {link.label}
               </a>
@@ -275,7 +275,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
               <div className="content-section-body">
                 <h4>{role.yourRole.heading}</h4>
                 {!role.yourRole.hideSubtitle && (
-                  <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+                  <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-primary)' }}>
                     This isn't a support role. You have direct impact on content performance from day one.
                   </p>
                 )}
@@ -284,7 +284,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                     <li key={i} className="reveal flex items-start gap-4">
                       <span
                         className="flex-shrink-0 mt-1 text-lg font-bold leading-none"
-                        style={{ color: 'var(--accent)', fontFamily: 'var(--app-font-mono)', minWidth: '1.25rem' }}
+                        style={{ color: 'var(--text-primary)', fontFamily: 'var(--app-font-mono)', minWidth: '1.25rem' }}
                         aria-hidden="true"
                       >
                         →
@@ -303,7 +303,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                 {Array.isArray(role.idealCandidate) ? (
                   <>
                     <h4>You think like this.</h4>
-                    <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+                    <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-primary)' }}>
                       Skills can be taught. These traits are harder to train for.
                     </p>
                   </>
@@ -315,7 +315,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                     <li key={i} className="reveal flex items-start gap-3">
                       <span
                         className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-2"
-                        style={{ background: 'var(--accent)' }}
+                        style={{ background: 'var(--text-primary)' }}
                       />
                       <span className="body-copy">{item}</span>
                     </li>
@@ -335,7 +335,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                       {card.title && (
                         <h3
                           className="text-sm font-bold uppercase tracking-[0.06em] mb-5"
-                          style={{ color: 'var(--accent)' }}
+                          style={{ color: 'var(--text-primary)' }}
                         >
                           {card.title}
                         </h3>
@@ -365,7 +365,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                 {Array.isArray(role.whatYoullDo) ? (
                   <>
                     <h4>A real day in this seat.</h4>
-                    <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+                    <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-primary)' }}>
                       No two days are identical — but this is the consistent rhythm you'll build.
                     </p>
                   </>
@@ -373,7 +373,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                   <>
                     <h4>{role.whatYoullDo.heading}</h4>
                     {!role.whatYoullDo.hideSubtitle && (
-                      <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+                      <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-primary)' }}>
                         No two days are identical — but this is the consistent rhythm you'll build.
                       </p>
                     )}
@@ -393,7 +393,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                           style={{
                             fontFamily: 'var(--app-font-mono)',
                             fontSize: '15px',
-                            color: 'var(--accent)',
+                            color: 'var(--text-primary)',
                             background: 'rgba(124, 58, 237, 0.15)',
                           }}
                         >
@@ -404,7 +404,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                             {task}
                           </p>
                           {detail && (
-                            <p className="body-copy text-sm mt-1" style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
+                            <p className="body-copy text-sm mt-1" style={{ color: 'var(--text-primary)', fontSize: '14px' }}>
                               {detail}
                             </p>
                           )}
@@ -421,7 +421,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
             <div className="content-section">
               <h3 className="content-section-label">{role.whatYoullLearn.heading}</h3>
               <div className="content-section-body">
-                <p className="body-copy text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
+                <p className="body-copy text-sm mb-4" style={{ color: 'var(--text-primary)' }}>
                   {role.whatYoullLearn.subtitle1}
                 </p>
                 <p className="body-copy text-base mb-6" style={{ color: 'var(--text-primary)' }}>
@@ -432,7 +432,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                     <li key={i} className="reveal flex items-start gap-3">
                       <span
                         className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-2"
-                        style={{ background: 'var(--accent)' }}
+                        style={{ background: 'var(--text-primary)' }}
                       />
                       <span className="body-copy">{item}</span>
                     </li>
@@ -451,14 +451,14 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                 {Array.isArray(role.dontApplyIf) ? (
                   <>
                     <h4>Read this before you apply.</h4>
-                    <p className="body-copy mb-6" style={{ color: 'var(--text-secondary)' }}>
+                    <p className="body-copy mb-6" style={{ color: 'var(--text-primary)' }}>
                       We keep our team tight. Every hire has direct impact on what we ship and how it
                       performs. That means we're deliberate - and honest about who this role{' '}
                       <em>isn't</em> for.
                     </p>
                   </>
                 ) : (
-                  <p className="body-copy mb-6" style={{ color: 'var(--text-secondary)' }}>
+                  <p className="body-copy mb-6" style={{ color: 'var(--text-primary)' }}>
                     {role.dontApplyIf.subtitle1}
                   </p>
                 )}
@@ -469,7 +469,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                     border: '1px solid rgba(255,255,255,0.06)',
                   }}
                 >
-                  <p className="text-xs font-bold uppercase tracking-widest mb-5" style={{ color: 'var(--text-muted)' }}>
+                  <p className="text-xs font-bold uppercase tracking-widest mb-5" style={{ color: 'var(--text-primary)' }}>
                     {Array.isArray(role.dontApplyIf) ? "Don't apply if you -" : role.dontApplyIf.subtitle2}
                   </p>
                   <ul className="space-y-4">
@@ -482,7 +482,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                         >
                           ✕
                         </span>
-                        <span className="body-copy" style={{ color: 'var(--text-secondary)' }}>{item}</span>
+                        <span className="body-copy" style={{ color: 'var(--text-primary)' }}>{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -548,7 +548,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
             </div>
             <div
               className="flex flex-wrap items-center justify-center gap-2 text-xs"
-              style={{ color: 'var(--text-muted)' }}
+              style={{ color: 'var(--text-primary)' }}
             >
               {[
                 { label: 'Privacy Policy', href: 'https://www.evocaa.in/privacy-policy/' },
@@ -561,9 +561,9 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="transition-colors duration-200 hover:opacity-80"
-                    style={{ color: 'var(--text-muted)' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+                    style={{ color: 'var(--text-primary)' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
                   >
                     {link.label}
                   </a>
@@ -571,10 +571,10 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                 </React.Fragment>
               ))}
             </div>
-            <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--text-primary)' }}>
               Evocaa is an equal opportunity employer. All applications are reviewed confidentially.
             </p>
-            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+            <p className="text-xs" style={{ color: 'var(--text-primary)' }}>
               © {new Date().getFullYear()} Evocaa. All rights reserved.
             </p>
           </div>

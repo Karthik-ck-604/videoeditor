@@ -30,7 +30,7 @@ export default function OpenRolesPage() {
             />
           </Link>
           <div className="flex items-center gap-1 sm:gap-2">
-            <span className="text-xs uppercase tracking-wider px-3 py-1 rounded-full bg-[rgba(255,255,255,0.06)] text-[var(--text-secondary)] border border-[rgba(255,255,255,0.08)]">
+            <span className="text-xs uppercase tracking-wider px-3 py-1 rounded-full bg-[rgba(255,255,255,0.06)] text-[var(--text-primary)] border border-[rgba(255,255,255,0.08)]">
               Careers Portal
             </span>
           </div>
@@ -49,7 +49,7 @@ export default function OpenRolesPage() {
             >
               Open Opportunities
             </h1>
-            <p className="max-w-xl mx-auto text-[var(--text-secondary)] font-light text-base sm:text-lg">
+            <p className="max-w-xl mx-auto text-[var(--text-primary)] font-light text-base sm:text-lg">
               We don't hire based on certificates or years of experience. We hire for mindset, craft, and the hunger to get better.
             </p>
           </div>
@@ -75,24 +75,24 @@ export default function OpenRolesPage() {
                   <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between z-10">
                     {/* Top row: Team badge */}
                     <div className="flex justify-between items-start">
-                      <span className="text-[10px] sm:text-xs uppercase tracking-widest font-semibold px-3 py-1.5 rounded-full bg-[rgba(18,8,32,0.7)] text-[var(--text-secondary)] border border-[rgba(255,255,255,0.06)] flex items-center gap-1.5">
-                        <Briefcase size={12} className="text-[var(--accent)]" />
+                      <span className="text-[10px] sm:text-xs uppercase tracking-widest font-semibold px-3 py-1.5 rounded-full bg-[rgba(18,8,32,0.7)] text-[var(--text-primary)] border border-[rgba(255,255,255,0.06)] flex items-center gap-1.5">
+                        <Briefcase size={12} className="text-[var(--text-primary)]" />
                         {role.team}
                       </span>
-                      <span className="w-8 h-8 rounded-full bg-[var(--accent)] flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-md">
+                      <span className="w-8 h-8 rounded-full bg-[var(--text-primary)] flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-md">
                         <ArrowRight size={16} />
                       </span>
                     </div>
 
                     {/* Bottom row: Title and Logistics */}
                     <div>
-                      <h2 className="text-xl sm:text-2xl font-semibold uppercase tracking-wide text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent)] transition-colors duration-300">
+                      <h2 className="text-xl sm:text-2xl font-semibold uppercase tracking-wide text-[var(--text-primary)] mb-3 group-hover:text-[var(--text-primary)] transition-colors duration-300">
                         {role.title}
                       </h2>
                       
-                      <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-[var(--text-secondary)] font-light">
+                      <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-[var(--text-primary)] font-light">
                         <span className="flex items-center gap-1.5">
-                          <MapPin size={12} className="text-[var(--text-muted)]" />
+                          <MapPin size={12} className="text-[var(--text-primary)]" />
                           {role.location}
                         </span>
                         <span>•</span>
@@ -118,7 +118,7 @@ export default function OpenRolesPage() {
             </div>
             <div
               className="flex flex-wrap items-center justify-center gap-2 text-xs"
-              style={{ color: 'var(--text-muted)' }}
+              style={{ color: 'var(--text-primary)' }}
             >
               {[
                 { label: 'Privacy Policy', href: 'https://www.evocaa.in/privacy-policy/' },
@@ -131,9 +131,9 @@ export default function OpenRolesPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="transition-colors duration-200 hover:opacity-80"
-                    style={{ color: 'var(--text-muted)' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+                    style={{ color: 'var(--text-primary)' }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
                   >
                     {link.label}
                   </a>
@@ -141,10 +141,10 @@ export default function OpenRolesPage() {
                 </React.Fragment>
               ))}
             </div>
-            <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--text-primary)' }}>
               Evocaa is an equal opportunity employer. All applications are reviewed confidentially.
             </p>
-            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+            <p className="text-xs" style={{ color: 'var(--text-primary)' }}>
               © {new Date().getFullYear()} Evocaa. All rights reserved.
             </p>
           </div>

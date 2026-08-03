@@ -158,11 +158,10 @@
   --bg: #120820;
   --card-bg: #2D1654;
   --elevated-bg: #3D1F6B;
-  --accent: #FFFFFF;
+
   --accent-secondary: #7C3AED;
   --text-primary: #FFFFFF;
-  --text-secondary: #FFFFFF;
-  --text-muted: #7A6E96;
+
   --divider: rgba(255, 255, 255, 0.14);
   --warning-red: #FF3B30;
   /* unchanged — must stay distinct from --accent */
@@ -182,11 +181,11 @@
   --evocaa-bg-alt: var(--bg-card);
   --evocaa-bg-card: var(--bg-elevated);
   --evocaa-text: var(--text-primary);
-  --evocaa-muted: var(--text-secondary);
+  --evocaa-muted: var(--text-primary);
   --evocaa-border: rgba(255, 255, 255, 0.12);
-  --evocaa-accent: var(--accent);
+  --evocaa-accent: var(--text-primary);
   --evocaa-text-primary: var(--text-primary);
-  --evocaa-gradient: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+  --evocaa-gradient: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-secondary) 100%);
   --evocaa-gradient-glow: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(124, 58, 237, 0.3) 100%);
   --evocaa-glow-small: 0 0 20px rgba(255, 255, 255, 0.25);
   --evocaa-glow-medium: 0 0 40px rgba(255, 255, 255, 0.3);
@@ -373,7 +372,7 @@
   font-family: var(--app-font-mono);
   font-size: 0.7rem;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--text-primary);
   transition: background 0.25s ease;
 }
 
@@ -646,7 +645,7 @@
   font-size: 12px;
   font-weight: 400;
   letter-spacing: 0.08em;
-  color: var(--text-muted);
+  color: var(--text-primary);
 }
 
 .hero-meta-value {
@@ -660,7 +659,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-primary);
 }
 
 .section-heading {
@@ -675,7 +674,7 @@
 .body-copy {
   font-size: clamp(16px, 2vw, 18px);
   line-height: 1.6;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .step-num {
@@ -683,7 +682,7 @@
   font-size: 40px;
   font-weight: 700;
   line-height: 1;
-  color: var(--accent);
+  color: var(--text-primary);
   opacity: 0.9;
   flex-shrink: 0;
   min-width: 3.5rem;
@@ -727,7 +726,7 @@
 }
 
 .content-section-body {
-  color: var(--text-secondary);
+  color: var(--text-primary);
   line-height: 1.6;
 }
 
@@ -809,7 +808,7 @@
 .btn-quiz-blocked {
   background: var(--bg-elevated);
   border: 1px solid var(--divider);
-  color: var(--text-muted);
+  color: var(--text-primary);
   cursor: not-allowed;
   pointer-events: none;
   box-shadow: none;
