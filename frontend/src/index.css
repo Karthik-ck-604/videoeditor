@@ -523,20 +523,7 @@
   border-radius: 16px;
 }
 
-.glass-requirement {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  padding: 32px;
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
 
-.glass-requirement:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.25);
-}
 
 .glass-cta {
   background: var(--glass-bg);
@@ -550,7 +537,6 @@
 @media (max-width: 767px) {
 
   .glass-meta,
-  .glass-requirement,
   .glass-cta,
   .glass-nav,
   .floating-nav {
@@ -1029,9 +1015,7 @@
     padding-inline: 20px;
   }
 
-  .glass-requirement {
-    padding: 24px;
-  }
+
 
   .quiz-option,
   .multi-option {
@@ -1077,9 +1061,7 @@
     transform: none;
   }
 
-  .glass-requirement:hover {
-    transform: none;
-  }
+
 
   .quiz-option:hover {
     transform: none;

@@ -331,10 +331,10 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                 <h4>Minimum qualifications.</h4>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                   {role.requirements.map((card, i) => (
-                    <div key={i} className="reveal glass-requirement">
+                    <div key={i} className="reveal requirement-list flex flex-col gap-5">
                       {card.title && (
                         <h3
-                          className="text-sm font-bold uppercase tracking-[0.06em] mb-5"
+                          className="text-sm font-bold uppercase tracking-[0.06em]"
                           style={{ color: 'var(--text-primary)' }}
                         >
                           {card.title}
