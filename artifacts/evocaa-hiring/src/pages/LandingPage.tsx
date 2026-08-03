@@ -177,10 +177,13 @@ export default function LandingPage({ onApply }: LandingPageProps) {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
-          className="text-sm font-bold tracking-[0.12em] uppercase px-3"
-          style={{ color: 'var(--text-primary)' }}
+          className="px-3 flex items-center"
         >
-          Evocaa
+          <img
+            src="/logo.png"
+            alt="Evocaa"
+            className="h-5 w-auto object-contain hover:opacity-80 transition-opacity duration-200"
+          />
         </a>
 
         <div className="flex items-center gap-1 sm:gap-2">
@@ -511,12 +514,13 @@ export default function LandingPage({ onApply }: LandingPageProps) {
       {/* ── Footer (outside card) ── */}
       <footer className="relative z-10 py-10 px-5">
         <div className="max-w-3xl mx-auto text-center space-y-5">
-          <p
-            className="text-sm font-bold tracking-[0.12em] uppercase"
-            style={{ color: 'var(--text-primary)' }}
-          >
-            Evocaa
-          </p>
+          <div className="flex justify-center">
+            <img
+              src="/logo.png"
+              alt="Evocaa Logo"
+              className="h-6 w-auto object-contain"
+            />
+          </div>
           <div
   className="flex flex-wrap items-center justify-center gap-2 text-xs"
   style={{ color: 'var(--text-muted)' }}

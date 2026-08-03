@@ -1248,12 +1248,11 @@ export default function Assessment({
             <ChevronLeft size={16} />
             {step === 1 ? 'Back to Job' : 'Back'}
           </button>
-          <span
-            className="text-sm font-bold tracking-widest"
-            style={{ color: 'var(--evocaa-text)' }}
-          >
-            EVOCAA
-          </span>
+          <img
+            src="/logo.png"
+            alt="Evocaa Logo"
+            className="h-5 w-auto object-contain"
+          />
           <span
             style={{
               fontFamily: 'var(--app-font-mono)',
