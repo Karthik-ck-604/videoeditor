@@ -126,7 +126,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
           <div
             className="max-w-lg w-full text-center glow-card p-10"
             style={{
-              background: 'rgba(233, 48, 197, 0.06)',
+              background: 'rgba(255, 255, 255, 0.06)',
             }}
           >
             <h2 className="text-2xl font-bold text-white mb-4">Role Not Found</h2>
@@ -179,9 +179,8 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                   e.preventDefault();
                   scrollToHash(link.href);
                 }}
-                className={`nav-link hidden sm:inline-flex ${
-                  activeSection === link.href ? 'nav-link-active' : ''
-                }`}
+                className={`nav-link hidden sm:inline-flex ${activeSection === link.href ? 'nav-link-active' : ''
+                  }`}
                 style={{ color: activeSection === link.href ? undefined : 'var(--text-secondary)' }}
               >
                 {link.label}
@@ -254,6 +253,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                   {role.jobSummary}
                 </p>
                 {/* Quote-callout card */}
+                {role.quoteCallout && (
                 <div
                   className="mt-8 p-6 rounded-xl"
                   style={{
@@ -262,12 +262,10 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                   }}
                 >
                   <p className="body-copy text-base" style={{ color: 'var(--text-primary)', fontStyle: 'italic' }}>
-                    "We don't hire based on certificates or years of experience.
-                    We hire for mindset, craft, and the hunger to get better.
-                    If your work moves people - and the data backs it up — we want to talk."
+                    {role.quoteCallout}
                   </p>
-                  <p className="text-sm mt-3 font-semibold" style={{ color: 'var(--accent)' }}>— Evocaa Hiring Team</p>
                 </div>
+                )}
               </div>
             </div>
 
@@ -276,9 +274,11 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
               <h3 className="content-section-label">Your Role</h3>
               <div className="content-section-body">
                 <h4>{role.yourRole.heading}</h4>
-                <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
-                  This isn't a support role. You have direct impact on content performance from day one.
-                </p>
+                {!role.yourRole.hideSubtitle && (
+                  <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+                    This isn't a support role. You have direct impact on content performance from day one.
+                  </p>
+                )}
                 <ul className="space-y-4">
                   {role.yourRole.paragraphs.map((item, i) => (
                     <li key={i} className="reveal flex items-start gap-4">
@@ -300,12 +300,18 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
             <div className="content-section">
               <h3 className="content-section-label">Ideal Candidate</h3>
               <div className="content-section-body">
-                <h4>You think like this.</h4>
-                <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
-                  Skills can be taught. These traits are harder to train for.
-                </p>
+                {Array.isArray(role.idealCandidate) ? (
+                  <>
+                    <h4>You think like this.</h4>
+                    <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+                      Skills can be taught. These traits are harder to train for.
+                    </p>
+                  </>
+                ) : (
+                  <h4>{role.idealCandidate.heading}</h4>
+                )}
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
-                  {role.idealCandidate.map((item, i) => (
+                  {(Array.isArray(role.idealCandidate) ? role.idealCandidate : role.idealCandidate.items).map((item, i) => (
                     <li key={i} className="reveal flex items-start gap-3">
                       <span
                         className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-2"
@@ -326,16 +332,18 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                   {role.requirements.map((card, i) => (
                     <div key={i} className="reveal glass-requirement">
-                      <h3
-                        className="text-sm font-bold uppercase tracking-[0.06em] mb-5"
-                        style={{ color: 'var(--accent)' }}
-                      >
-                        {card.title}
-                      </h3>
+                      {card.title && (
+                        <h3
+                          className="text-sm font-bold uppercase tracking-[0.06em] mb-5"
+                          style={{ color: 'var(--accent)' }}
+                        >
+                          {card.title}
+                        </h3>
+                      )}
                       <ul className="space-y-3">
                         {card.items.map((item, j) => (
                           <li key={j} className="flex items-start gap-3">
-                            <span className="flex-shrink-0 mt-1.5 text-xs text-[var(--accent-dim)]" aria-hidden="true">
+                            <span className="flex-shrink-0 mt-1.5 text-xs text-[var(--text-primary)]" aria-hidden="true">
                               ▶
                             </span>
                             <span className="body-copy text-base">{item}</span>
@@ -350,14 +358,29 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
 
             {/* ── Day-to-Day ── */}
             <div id="day-to-day" className="content-section">
-              <h3 className="content-section-label">Day-to-Day</h3>
+              <h3 className="content-section-label">
+                {Array.isArray(role.whatYoullDo) ? 'Day-to-Day' : role.whatYoullDo.label}
+              </h3>
               <div className="content-section-body">
-                <h4>A real day in this seat.</h4>
-                <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
-                  No two days are identical — but this is the consistent rhythm you'll build.
-                </p>
+                {Array.isArray(role.whatYoullDo) ? (
+                  <>
+                    <h4>A real day in this seat.</h4>
+                    <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+                      No two days are identical — but this is the consistent rhythm you'll build.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h4>{role.whatYoullDo.heading}</h4>
+                    {!role.whatYoullDo.hideSubtitle && (
+                      <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+                        No two days are identical — but this is the consistent rhythm you'll build.
+                      </p>
+                    )}
+                  </>
+                )}
                 <ul className="space-y-0">
-                  {role.whatYoullDo.map((item, i) => {
+                  {(Array.isArray(role.whatYoullDo) ? role.whatYoullDo : role.whatYoullDo.items).map((item, i) => {
                     const [task, detail] = item.split('|');
                     return (
                       <li
@@ -393,16 +416,52 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
               </div>
             </div>
 
+            {/* ── What You'll Learn ── */}
+            {role.whatYoullLearn && (
+            <div className="content-section">
+              <h3 className="content-section-label">{role.whatYoullLearn.heading}</h3>
+              <div className="content-section-body">
+                <p className="body-copy text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
+                  {role.whatYoullLearn.subtitle1}
+                </p>
+                <p className="body-copy text-base mb-6" style={{ color: 'var(--text-primary)' }}>
+                  {role.whatYoullLearn.subtitle2}
+                </p>
+                <ul className="space-y-4">
+                  {role.whatYoullLearn.items.map((item, i) => (
+                    <li key={i} className="reveal flex items-start gap-3">
+                      <span
+                        className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-2"
+                        style={{ background: 'var(--accent)' }}
+                      />
+                      <span className="body-copy">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            )}
+
             {/* ── You Shouldn't Apply If ── */}
             <div className="content-section">
-              <h3 className="content-section-label">Important</h3>
+              <h3 className="content-section-label">
+                {Array.isArray(role.dontApplyIf) ? 'Important' : role.dontApplyIf.label}
+              </h3>
               <div className="content-section-body">
-                <h4>Read this before you apply.</h4>
-                <p className="body-copy mb-6" style={{ color: 'var(--text-secondary)' }}>
-                  We keep our team tight. Every hire has direct impact on what we ship and how it
-                  performs. That means we're deliberate - and honest about who this role{' '}
-                  <em>isn't</em> for.
-                </p>
+                {Array.isArray(role.dontApplyIf) ? (
+                  <>
+                    <h4>Read this before you apply.</h4>
+                    <p className="body-copy mb-6" style={{ color: 'var(--text-secondary)' }}>
+                      We keep our team tight. Every hire has direct impact on what we ship and how it
+                      performs. That means we're deliberate - and honest about who this role{' '}
+                      <em>isn't</em> for.
+                    </p>
+                  </>
+                ) : (
+                  <p className="body-copy mb-6" style={{ color: 'var(--text-secondary)' }}>
+                    {role.dontApplyIf.subtitle1}
+                  </p>
+                )}
                 <div
                   className="reveal rounded-xl p-6 sm:p-8"
                   style={{
@@ -411,10 +470,10 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                   }}
                 >
                   <p className="text-xs font-bold uppercase tracking-widest mb-5" style={{ color: 'var(--text-muted)' }}>
-                    Don't apply if you -
+                    {Array.isArray(role.dontApplyIf) ? "Don't apply if you -" : role.dontApplyIf.subtitle2}
                   </p>
                   <ul className="space-y-4">
-                    {role.dontApplyIf.map((item, i) => (
+                    {(Array.isArray(role.dontApplyIf) ? role.dontApplyIf : role.dontApplyIf.items).map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <span
                           className="text-base font-bold leading-none flex-shrink-0 mt-0.5"

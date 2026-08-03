@@ -58,7 +58,7 @@ export default function OpenRolesPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             {ROLES.map((role) => (
               <Link key={role.slug} href={`/hiring/${role.slug}`}>
-                <a className="group block relative rounded-[20px] overflow-hidden aspect-[16/10] border border-[rgba(255,255,255,0.08)] bg-[var(--bg-card)] shadow-lg transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(233,48,197,0.4)] hover:shadow-[0_12px_40px_rgba(233,48,197,0.15)]">
+                <a className="group block relative rounded-[20px] overflow-hidden aspect-[16/10] border border-[rgba(255,255,255,0.08)] bg-[var(--bg-card)] shadow-lg transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(255, 255, 255, 0.4)] hover:shadow-[0_12px_40px_rgba(255, 255, 255, 0.15)]">
                   {/* Hero background image */}
                   <div
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"

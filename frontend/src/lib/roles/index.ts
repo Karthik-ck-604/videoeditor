@@ -16,11 +16,13 @@ export interface RoleConfig {
   datePosted: string
   heroImage: string
   jobSummary: string
-  yourRole: { heading: string; paragraphs: string[] }
-  idealCandidate: string[]
+  quoteCallout?: string
+  yourRole: { heading: string; hideSubtitle?: boolean; paragraphs: string[] }
+  idealCandidate: string[] | { heading: string; items: string[] }
   requirements: { title: string; items: string[] }[]
-  whatYoullDo: string[]
-  dontApplyIf: string[]
+  whatYoullDo: string[] | { label: string; heading: string; hideSubtitle?: boolean; items: string[] }
+  whatYoullLearn?: { heading: string; subtitle1: string; subtitle2: string; items: string[] }
+  dontApplyIf: string[] | { label: string; subtitle1: string; subtitle2: string; items: string[] }
   softwareOptions: string[]
   portfolioPrompt: string
   techQuestions: QuizQuestion[]
@@ -38,9 +40,11 @@ export const ROLES: RoleConfig[] = [
     type: 'Full-Time',
     datePosted: 'Jul 31, 2026',
     heroImage: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=1920&q=85&auto=format&fit=crop',
-    jobSummary: "We're looking for a creative Video Editor who understands storytelling, marketing psychology, and short-form content—not just editing software.",
+    jobSummary: "We're looking for a creative Video Editor who understands storytelling, marketing psychology, and short-form content-not just editing software.",
+    quoteCallout: "We don't hire based only on certificates or years of experience. We hire people with the right mindset, a willingness to learn, and the ability to solve real problems. If you can prove your skills through our assessment, we care more about your potential than your resume.",
     yourRole: {
-      heading: 'What success looks like',
+      heading: 'What success looks like.',
+      hideSubtitle: true,
       paragraphs: [
         'Edit high-performing Instagram Reels & YouTube Shorts',
         'Create engaging marketing videos',
@@ -49,48 +53,69 @@ export const ROLES: RoleConfig[] = [
         'Deliver projects on time'
       ]
     },
-    idealCandidate: [
-      'Loves storytelling',
-      'Learns quickly',
-      'Accepts feedback positively',
-      'Has strong attention to detail',
-      'Enjoys solving creative problems',
-      'Wants long-term career growth'
-    ],
+    idealCandidate: {
+      heading: 'You are someone who:',
+      items: [
+        'Loves storytelling',
+        'Learns quickly',
+        'Accepts feedback positively',
+        'Has strong attention to detail',
+        'Enjoys solving creative problems',
+        'Wants long-term career growth'
+      ]
+    },
     requirements: [
       {
-        title: 'Software & Technical',
+        title: '',
         items: [
-          'Experience with DaVinci Resolve & Adobe Premiere Pro',
+          'Experience with davinci resolve & Adobe Premiere Pro',
           'Basic knowledge of After Effects',
-          'Basic color correction and audio editing'
-        ]
-      },
-      {
-        title: 'Skills & Portfolio',
-        items: [
           'Understanding of short-form content',
+          'Basic color correction and audio editing',
           'Portfolio with previous work',
           'Ability to meet deadlines'
         ]
       }
     ],
-    whatYoullDo: [
-      'Edit 3–5 short-form videos daily',
-      'Add captions, sound effects, and motion graphics',
-      'Follow brand guidelines',
-      'Organize project files',
-      'Collaborate with designers and marketers',
-      'Continuously improve editing quality'
-    ],
-    dontApplyIf: [
-      "Can't accept constructive feedback",
-      'Frequently miss deadlines',
-      'Prefer working without accountability',
-      'Only know basic template editing',
-      'Are looking for a temporary job',
-      "Aren't willing to learn and improve"
-    ],
+    whatYoullDo: {
+      label: "What You'll Do",
+      heading: 'Day-to-day responsibilities.',
+      hideSubtitle: true,
+      items: [
+        'Edit 3–5 short-form videos daily',
+        'Add captions, sound effects, and motion graphics',
+        'Follow brand guidelines',
+        'Organize project files',
+        'Collaborate with designers and marketers',
+        'Continuously improve editing quality'
+      ]
+    },
+    whatYoullLearn: {
+      heading: "What You'll Learn",
+      subtitle1: "This section attracts ambitious candidates.",
+      subtitle2: "At Evocaa, you'll learn:",
+      items: [
+        'Marketing psychology',
+        'Storytelling for conversions',
+        'Performance-focused editing',
+        'AI tools for content creation',
+        'Personal branding content',
+        'High-retention video strategies'
+      ]
+    },
+    dontApplyIf: {
+      label: "You Shouldn't Apply If",
+      subtitle1: "This is an excellent filtering section.",
+      subtitle2: "Don't apply if you:",
+      items: [
+        "Can't accept constructive feedback",
+        'Frequently miss deadlines',
+        'Prefer working without accountability',
+        'Only know basic template editing',
+        'Are looking for a temporary job',
+        "Aren't willing to learn and improve"
+      ]
+    },
     softwareOptions: [
       'Adobe Premiere Pro',
       'After Effects',
