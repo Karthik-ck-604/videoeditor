@@ -17,7 +17,7 @@ export function initLenis(): void {
 
   lenisInstance = new Lenis({
     duration: 1.15,
-    easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    easing: (t: number) => Math.min(1, 1.01 - Math.pow(2, -10 * t)),
     smoothWheel: true,
   });
 
