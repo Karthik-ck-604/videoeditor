@@ -239,7 +239,7 @@ export default function LandingPage({ onApply }: LandingPageProps) {
           <div className="hero-media">
             <img
               src={UNSPLASH.hero}
-              alt=""
+              alt="video editor related image"
               className="hero-img-cinematic w-full max-w-full h-full object-cover"
               style={{
                 filter: 'saturate(0.5) brightness(0.5)',
@@ -468,7 +468,7 @@ export default function LandingPage({ onApply }: LandingPageProps) {
           <div
             className="reveal rounded-[20px] px-6 sm:px-12 py-12 sm:py-16 text-center relative overflow-hidden"
             style={{ background: 'var(--bg-elevated)' }}
-          >
+          >Terms
             <div
               aria-hidden="true"
               className="absolute inset-0 opacity-15"
@@ -518,24 +518,30 @@ export default function LandingPage({ onApply }: LandingPageProps) {
             Evocaa
           </p>
           <div
-            className="flex flex-wrap items-center justify-center gap-2 text-xs"
-            style={{ color: 'var(--text-muted)' }}
-          >
-            {['Privacy Policy', 'Terms & Conditions', 'Contact Us'].map((link, i, arr) => (
-              <React.Fragment key={link}>
-                <a
-                  href="#"
-                  className="transition-colors duration-200 hover:opacity-80"
-                  style={{ color: 'var(--text-muted)' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
-                >
-                  {link}
-                </a>
-                {i < arr.length - 1 && <span aria-hidden="true">|</span>}
-              </React.Fragment>
-            ))}
-          </div>
+  className="flex flex-wrap items-center justify-center gap-2 text-xs"
+  style={{ color: 'var(--text-muted)' }}
+>
+  {[
+    { label: 'Privacy Policy', href: 'https://www.evocaa.in/privacy-policy/' },
+    { label: 'Terms & Conditions', href: 'https://www.evocaa.in/terms-and-conditions/' },
+    { label: 'Contact Us', href: '#' },
+  ].map((link, i, arr) => (
+    <React.Fragment key={link.label}>
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="transition-colors duration-200 hover:opacity-80"
+        style={{ color: 'var(--text-muted)' }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+        onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+      >
+        {link.label}
+      </a>
+      {i < arr.length - 1 && <span aria-hidden="true">|</span>}
+    </React.Fragment>
+  ))}
+</div>
           <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
             Evocaa is an equal opportunity employer. All applications are reviewed confidentially.
           </p>
