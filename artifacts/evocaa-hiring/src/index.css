@@ -154,7 +154,7 @@
   --text-primary: #FFFFFF;
   --text-secondary: #B8AED4;
   --text-muted: #7A6E96;
-  --divider: rgba(233, 48, 197, 0.08);
+  --divider: rgba(255, 255, 255, 0.14);
   --warning-red: #FF3B30; /* unchanged — must stay distinct from --accent */
 
   --bg-page: var(--bg);
