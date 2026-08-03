@@ -380,8 +380,8 @@
   isolation: isolate;
   background:
     radial-gradient(circle at 20% 0%, rgba(233, 48, 197, 0.06), transparent 55%),
-    linear-gradient(180deg, rgba(45, 22, 84, 0.45) 0%, rgba(61, 31, 107, 0.30) 100%),
-    rgba(45, 22, 84, 0.35);
+    linear-gradient(180deg, rgba(45, 22, 84, 0.35) 0%, rgba(61, 31, 107, 0.22) 100%),
+    rgba(45, 22, 84, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-card);
   backdrop-filter: blur(32px);
@@ -391,7 +391,8 @@
   margin-top: clamp(112px, 14vw, 144px);
   margin-bottom: clamp(48px, 8vw, 96px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
+  /* NOTE: overflow:hidden intentionally removed — it clips the backdrop-filter
+     GPU compositing layer. Border-radius clipping is delegated to ::after. */
 }
 
 .main-card::before {
@@ -401,6 +402,20 @@
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent 38%, rgba(233, 48, 197, 0.04));
   pointer-events: none;
   z-index: -1;
+  border-radius: inherit;
+}
+
+/* Clip the card to its border-radius without using overflow:hidden on the host
+   (which would break backdrop-filter). The ::after pseudo clips visible content. */
+.main-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 9999;
+  /* Masks any child overflow via a ring shadow */
+  box-shadow: inset 0 0 0 0 transparent;
 }
 
 /* ── Floating pill nav bar ── */

@@ -317,15 +317,7 @@ export default function LandingPage({ onApply }: LandingPageProps) {
                     >
                       →
                     </span>
-                    <div>
-                      <p className="body-copy" style={{ color: 'var(--text-primary)' }}>{item.text}</p>
-                      <span
-                        className="inline-block mt-1.5 text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded"
-                        style={{ background: 'rgba(233, 48, 197, 0.12)', color: 'var(--accent)' }}
-                      >
-                        {item.tag}
-                      </span>
-                    </div>
+                    <p className="body-copy" style={{ color: 'var(--text-primary)' }}>{item.text}</p>
                   </li>
                 ))}
               </ul>
