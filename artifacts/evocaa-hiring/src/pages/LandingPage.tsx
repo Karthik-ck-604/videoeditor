@@ -283,7 +283,7 @@ export default function LandingPage({ onApply }: LandingPageProps) {
                 className="mt-8 p-6 rounded-xl"
                 style={{
                   background: 'var(--bg-elevated)',
-                  borderLeft: '3px solid var(--accent)',
+                  borderLeft: '3px solid var(--accent-secondary)',
                 }}
               >
                 <p className="body-copy text-base" style={{ color: 'var(--text-primary)', fontStyle: 'italic' }}>
@@ -318,7 +318,7 @@ export default function LandingPage({ onApply }: LandingPageProps) {
                       <p className="body-copy" style={{ color: 'var(--text-primary)' }}>{item.text}</p>
                       <span
                         className="inline-block mt-1.5 text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded"
-                        style={{ background: 'rgba(232,180,74,0.12)', color: 'var(--accent)' }}
+                        style={{ background: 'rgba(233, 48, 197, 0.12)', color: 'var(--accent)' }}
                       >
                         {item.tag}
                       </span>
@@ -399,16 +399,15 @@ export default function LandingPage({ onApply }: LandingPageProps) {
                     style={{ borderBottom: '1px solid var(--divider)' }}
                   >
                     <span
-                      className="flex-shrink-0 font-bold leading-none pt-0.5"
+                      className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-bold"
                       style={{
                         fontFamily: 'var(--app-font-mono)',
-                        fontSize: '28px',
+                        fontSize: '15px',
                         color: 'var(--accent)',
-                        opacity: 0.9,
-                        minWidth: '2.5rem',
+                        background: 'rgba(124, 58, 237, 0.15)',
                       }}
                     >
-                      {String(i + 1).padStart(2, '0')}
+                      {String(i + 1).padStart(3, '0')}
                     </span>
                     <div>
                       <p className="body-copy font-semibold" style={{ color: 'var(--text-primary)' }}>
