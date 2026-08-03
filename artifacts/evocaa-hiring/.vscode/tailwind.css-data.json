@@ -1,0 +1,13 @@
+{
+  "version": 1.1,
+  "atDirectives": [
+    { "name": "@plugin",         "description": "Tailwind v4 — load a plugin" },
+    { "name": "@custom-variant", "description": "Tailwind v4 — define a custom variant" },
+    { "name": "@theme",          "description": "Tailwind v4 — define design tokens" },
+    { "name": "@apply",          "description": "Tailwind — apply utility classes inline" },
+    { "name": "@layer",          "description": "Tailwind — target a CSS layer" },
+    { "name": "@source",         "description": "Tailwind v4 — explicit content source" },
+    { "name": "@utility",        "description": "Tailwind v4 — define a custom utility" },
+    { "name": "@variant",        "description": "Tailwind v4 — conditional variant block" }
+  ]
+}

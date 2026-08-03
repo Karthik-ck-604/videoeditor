@@ -11,7 +11,7 @@ const UNSPLASH = {
   cta: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920&q=80&auto=format&fit=crop',
 };
 
-const ROLE_BULLETS = [
+const ROLE_BULLETS: { text: string; tag: string }[] = [
   {
     text: 'Own short-form performance — edit Reels & Shorts engineered to stop the scroll and convert viewers into followers.',
     tag: 'Core',

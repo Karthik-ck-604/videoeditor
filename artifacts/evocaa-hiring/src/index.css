@@ -145,7 +145,7 @@
 }
 
 :root {
-  --bg: #1A0B2E;
+  --bg: #120820;
   --card-bg: #2D1654;
   --elevated-bg: #3D1F6B;
   --accent: #E930C5;
@@ -248,8 +248,8 @@
   background-color: var(--bg-page);
   background-image: radial-gradient(
     circle at 100% 100%,
-    rgba(233, 48, 197, 0.28) 0%,
-    rgba(124, 58, 237, 0.10) 30%,
+    rgba(233, 48, 197, 0.18) 0%,
+    rgba(124, 58, 237, 0.08) 30%,
     transparent 55%
   );
   background-repeat: no-repeat;
@@ -379,17 +379,13 @@
   z-index: 1;
   isolation: isolate;
   background:
-    linear-gradient(180deg, rgba(20, 20, 22, 0.6) 0%, rgba(28, 28, 31, 0.4) 100%),
-    radial-gradient(
-      circle at 100% 0%,
-      rgba(233, 48, 197, 0.06) 0%,
-      rgba(124, 58, 237, 0.02) 30%,
-      transparent 45%
-    );
+    radial-gradient(circle at 20% 0%, rgba(233, 48, 197, 0.06), transparent 55%),
+    linear-gradient(180deg, rgba(45, 22, 84, 0.45) 0%, rgba(61, 31, 107, 0.30) 100%),
+    rgba(45, 22, 84, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-card);
-  backdrop-filter: blur(24px) saturate(150%);
-  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
   margin-inline: clamp(20px, 5.5vw, 96px);
   /* ~48px of page bg visible between floating nav and card top */
   margin-top: clamp(112px, 14vw, 144px);
@@ -670,7 +666,7 @@
   grid-template-columns: 200px 1fr;
   gap: 40px;
   padding-block: 40px;
-  border-top: 1px solid var(--divider);
+  border-top: 1.5px solid var(--divider);
   align-items: start;
 }
 
