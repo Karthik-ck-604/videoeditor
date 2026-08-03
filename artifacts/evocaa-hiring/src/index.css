@@ -161,6 +161,7 @@
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   --radius-card: 28px;
   --radius-panel: 20px;
+  --warning-red: #FF3B30;
 
   /* Legacy aliases for assessment flow — now using warm gold accent */
   --evocaa-bg: var(--bg-page);
@@ -642,7 +643,7 @@
 }
 
 .content-column {
-  max-width: 720px;
+  max-width: 900px;
   margin-left: auto;
   margin-right: auto;
   padding-left: clamp(20px, 5vw, 48px);
@@ -650,8 +651,62 @@
 }
 
 .section-spacing {
-  padding-top: clamp(64px, 10vw, 100px);
-  padding-bottom: clamp(64px, 10vw, 100px);
+  padding-top: clamp(48px, 8vw, 80px);
+  padding-bottom: 0;
+}
+
+/* ── Two-column definition-list section layout ── */
+.content-section {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 40px;
+  padding-block: 40px;
+  border-top: 1px solid var(--divider);
+  align-items: start;
+}
+
+.content-section:first-child {
+  border-top: none;
+  padding-top: 32px;
+}
+
+.content-section-label {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  padding-top: 4px;
+}
+
+.content-section-body {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.content-section-body h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+/* Sections container — replaces old per-section spacing */
+.sections-wrapper {
+  padding-bottom: clamp(48px, 8vw, 80px);
+}
+
+@media (max-width: 767px) {
+  .content-section {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding-block: 32px;
+  }
+
+  .content-section-label {
+    font-size: 16px;
+  }
 }
 
 .meta-divider {

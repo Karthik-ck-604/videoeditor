@@ -219,159 +219,155 @@ export default function LandingPage({ onApply }: LandingPageProps) {
           </div>
         </section>
 
-        {/* ── Job Summary ── */}
-        <section className="section-spacing pt-16 sm:pt-20">
-          <div className="content-column reveal">
-            <p className="section-eyebrow mb-4">Job Summary</p>
-            <p className="body-copy text-xl sm:text-2xl font-light leading-relaxed" style={{ color: 'var(--text-primary)' }}>
-              We're looking for a creative Video Editor who understands{' '}
-              <strong className="font-semibold">storytelling, marketing psychology,</strong> and
-              short-form content —{' '}
-              <em style={{ color: 'var(--text-secondary)' }}>not just editing software.</em>
-            </p>
-            <div
-              className="mt-8 p-6 rounded-xl"
-              style={{
-                background: 'var(--bg-elevated)',
-                borderLeft: '3px solid var(--accent)',
-              }}
-            >
-              <p className="body-copy text-base">
-                We don't hire based only on certificates or years of experience. We hire people
-                with the right mindset, a willingness to learn, and the ability to solve real
-                problems. If you can prove your skills through our assessment, we care more about
-                your potential than your resume.
+        {/* ── All content sections — two-column definition-list layout ── */}
+        <div className="content-column sections-wrapper" style={{ paddingTop: 'clamp(40px, 6vw, 64px)' }}>
+
+          {/* ── Job Summary ── */}
+          <div className="content-section reveal">
+            <h3 className="content-section-label">Job Summary</h3>
+            <div className="content-section-body">
+              <p className="body-copy text-xl sm:text-2xl font-light leading-relaxed" style={{ color: 'var(--text-primary)' }}>
+                We're looking for a creative Video Editor who understands{' '}
+                <strong className="font-semibold" style={{ color: 'var(--accent)' }}>storytelling, marketing psychology,</strong> and
+                short-form content —{' '}
+                <em style={{ color: 'var(--text-secondary)' }}>not just editing software.</em>
               </p>
+              {/* Quote-callout card — preserved as-is */}
+              <div
+                className="mt-8 p-6 rounded-xl"
+                style={{
+                  background: 'var(--bg-elevated)',
+                  borderLeft: '3px solid var(--accent)',
+                }}
+              >
+                <p className="body-copy text-base">
+                  We don't hire based only on certificates or years of experience. We hire people
+                  with the right mindset, a willingness to learn, and the ability to solve real
+                  problems. If you can prove your skills through our assessment, we care more about
+                  your potential than your resume.
+                </p>
+              </div>
             </div>
           </div>
-        </section>
 
-        {/* ── Your Role ── */}
-        <section id="role" className="section-spacing">
-          <div className="content-column">
-            <div className="reveal mb-10">
-              <p className="section-eyebrow mb-3">Your Role</p>
-              <h2 className="section-heading">What success looks like.</h2>
-            </div>
-            <ul className="space-y-5">
-              {ROLE_BULLETS.map((item, i) => (
-                <li key={i} className="reveal flex items-start gap-4">
-                  <span className="step-num">{String(i + 1).padStart(3, '0')}</span>
-                  <p className="body-copy pt-2">{item}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        {/* ── Ideal Candidate ── */}
-        <section className="section-spacing">
-          <div className="content-column">
-            <div className="reveal mb-10">
-              <p className="section-eyebrow mb-3">Ideal Candidate</p>
-              <h2 className="section-heading">You are someone who:</h2>
-            </div>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
-              {IDEAL_BULLETS.map((item, i) => (
-                <li key={i} className="reveal flex items-center gap-3">
-                  <span
-                    className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                    style={{ background: 'var(--accent)' }}
-                  />
-                  <span className="body-copy">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        {/* ── Requirements (2 glass cards) ── */}
-        <section id="requirements" className="section-spacing">
-          <div className="content-column">
-            <div className="reveal mb-10">
-              <p className="section-eyebrow mb-3">Requirements</p>
-              <h2 className="section-heading">Minimum qualifications.</h2>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-              {REQUIREMENT_CARDS.map((card, i) => (
-                <div key={i} className="reveal glass-requirement">
-                  <h3
-                    className="text-sm font-bold uppercase tracking-[0.06em] mb-5"
-                    style={{ color: 'var(--accent)' }}
-                  >
-                    {card.title}
-                  </h3>
-                  <ul className="space-y-3">
-                    {card.items.map((item, j) => (
-                      <li key={j} className="flex items-start gap-3">
-                        <ChevronRight
-                          size={16}
-                          className="flex-shrink-0 mt-1"
-                          style={{ color: 'var(--accent-dim)' }}
-                        />
-                        <span className="body-copy text-base">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+          {/* ── Your Role ── */}
+          <div id="role" className="content-section">
+            <h3 className="content-section-label">Your Role</h3>
+            <div className="content-section-body">
+              <h4>What success looks like.</h4>
+              <ul className="space-y-5">
+                {ROLE_BULLETS.map((item, i) => (
+                  <li key={i} className="reveal flex items-start gap-4">
+                    <span className="step-num">{String(i + 1).padStart(3, '0')}</span>
+                    <p className="body-copy pt-2">{item}</p>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
-        </section>
 
-        {/* ── What You'll Do ── */}
-        <section id="day-to-day" className="section-spacing">
-          <div className="content-column">
-            <div className="reveal mb-10">
-              <p className="section-eyebrow mb-3">Day-to-Day</p>
-              <h2 className="section-heading">What You'll Do.</h2>
-            </div>
-            <ul className="space-y-6">
-              {DAILY_TASKS.map((item, i) => (
-                <li
-                  key={i}
-                  className="reveal flex items-start gap-5 pb-6"
-                  style={{ borderBottom: i < DAILY_TASKS.length - 1 ? '1px solid var(--divider)' : undefined }}
-                >
-                  <span className="step-num">{String(i + 1).padStart(3, '0')}</span>
-                  <p className="body-copy font-medium pt-1" style={{ color: 'var(--text-primary)' }}>
-                    {item}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        {/* ── You Shouldn't Apply If ── */}
-        <section className="section-spacing">
-          <div className="content-column">
-            <div className="reveal mb-10">
-              <p className="section-eyebrow mb-3">Important</p>
-              <h2 className="section-heading">You Shouldn't Apply If</h2>
-              <p className="body-copy mt-3 text-base">Don't apply if you:</p>
-            </div>
-            <div
-              className="reveal rounded-xl p-6 sm:p-8"
-              style={{ background: 'var(--bg-elevated)' }}
-            >
-              <ul className="space-y-4">
-                {FILTER_ITEMS.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3">
+          {/* ── Ideal Candidate ── */}
+          <div className="content-section">
+            <h3 className="content-section-label">Ideal Candidate</h3>
+            <div className="content-section-body">
+              <h4>You are someone who:</h4>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
+                {IDEAL_BULLETS.map((item, i) => (
+                  <li key={i} className="reveal flex items-center gap-3">
                     <span
-                      className="text-lg leading-none flex-shrink-0 mt-0.5"
-                      style={{ color: 'var(--text-muted)' }}
-                      aria-hidden="true"
-                    >
-                      ×
-                    </span>
+                      className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                      style={{ background: 'var(--accent)' }}
+                    />
                     <span className="body-copy">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
-        </section>
+
+          {/* ── Requirements ── */}
+          <div id="requirements" className="content-section">
+            <h3 className="content-section-label">Requirements</h3>
+            <div className="content-section-body">
+              <h4>Minimum qualifications.</h4>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                {REQUIREMENT_CARDS.map((card, i) => (
+                  <div key={i} className="reveal glass-requirement">
+                    <h3
+                      className="text-sm font-bold uppercase tracking-[0.06em] mb-5"
+                      style={{ color: 'var(--accent)' }}
+                    >
+                      {card.title}
+                    </h3>
+                    <ul className="space-y-3">
+                      {card.items.map((item, j) => (
+                        <li key={j} className="flex items-start gap-3">
+                          <ChevronRight
+                            size={16}
+                            className="flex-shrink-0 mt-1"
+                            style={{ color: 'var(--accent-dim)' }}
+                          />
+                          <span className="body-copy text-base">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* ── Day-to-Day ── */}
+          <div id="day-to-day" className="content-section">
+            <h3 className="content-section-label">Day-to-Day</h3>
+            <div className="content-section-body">
+              <h4>What You'll Do.</h4>
+              <ul className="space-y-6">
+                {DAILY_TASKS.map((item, i) => (
+                  <li
+                    key={i}
+                    className="reveal flex items-start gap-5 pb-6"
+                    style={{ borderBottom: i < DAILY_TASKS.length - 1 ? '1px solid var(--divider)' : undefined }}
+                  >
+                    <span className="step-num">{String(i + 1).padStart(3, '0')}</span>
+                    <p className="body-copy font-medium pt-1" style={{ color: 'var(--text-primary)' }}>
+                      {item}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* ── You Shouldn't Apply If ── */}
+          <div className="content-section">
+            <h3 className="content-section-label">Important</h3>
+            <div className="content-section-body">
+              <h4>You Shouldn't Apply If</h4>
+              <p className="body-copy text-base mb-6">Don't apply if you:</p>
+              <div
+                className="reveal rounded-xl p-6 sm:p-8"
+                style={{ background: 'var(--bg-elevated)' }}
+              >
+                <ul className="space-y-4">
+                  {FILTER_ITEMS.map((item, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <span
+                        className="text-lg leading-none flex-shrink-0 mt-0.5"
+                        style={{ color: 'var(--warning-red)' }}
+                        aria-hidden="true"
+                      >
+                        ×
+                      </span>
+                      <span className="body-copy">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
 
         {/* ── CTA Band (nested elevated panel) ── */}
         <section className="px-5 sm:px-10 pb-16 sm:pb-20">
