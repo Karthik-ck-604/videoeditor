@@ -79,8 +79,8 @@ export default function OpenRolesPage() {
                         <Briefcase size={12} className="text-[var(--text-primary)]" />
                         {role.team}
                       </span>
-                      <span className="w-8 h-8 rounded-full bg-[var(--text-primary)] flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-md">
-                        <ArrowRight size={16} />
+                      <span className="w-8 h-8 rounded-full bg-[#1A0B2E] flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-md">
+                        <ArrowRight size={16} color="#FFFFFF" strokeWidth={2.5} />
                       </span>
                     </div>
 
