@@ -169,7 +169,7 @@ function QuizOption({
         className={`multi-option ${selected ? 'selected' : ''}`}
       >
         <div className={`multi-check ${selected ? 'selected' : ''}`}>
-          {selected && <Check size={12} color="#fff" />}
+          {selected && <Check size={12} color="#1A0B2E" />}
         </div>
         <span style={{ color: 'var(--evocaa-text)', fontSize: '0.9375rem' }}>
           {label}
@@ -1216,7 +1216,7 @@ export default function Assessment({
             className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center"
             style={{ background: 'var(--evocaa-gradient)' }}
           >
-            <Check size={36} color="#fff" />
+            <Check size={36} color="#1A0B2E" />
           </div>
           <h2
             className="font-bold mb-4"

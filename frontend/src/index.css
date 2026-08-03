@@ -357,6 +357,7 @@
 
 .quiz-option.selected .option-badge {
   background: var(--evocaa-gradient);
+  color: #1A0B2E;
 }
 
 /* ── Option badge ── */
@@ -562,7 +563,7 @@
 /* ── Accent CTA button ── */
 .btn-accent {
   background: linear-gradient(135deg, #FFFFFF 0%, #7C3AED 100%);
-  color: #FFFFFF;
+  color: #1A0B2E;
   font-weight: 700;
   letter-spacing: 0.02em;
   border: none;
@@ -819,7 +820,7 @@
 .btn-quiz-final {
   background: linear-gradient(135deg, #FFFFFF 0%, #7C3AED 100%);
   border: none;
-  color: #FFFFFF;
+  color: #1A0B2E;
   font-weight: 700;
   letter-spacing: 0.02em;
   cursor: pointer;
