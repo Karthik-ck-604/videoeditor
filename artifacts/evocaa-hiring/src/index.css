@@ -1042,8 +1042,8 @@ html.lenis body {
     pointer-events: none;
   }
 
-  .no-default-hover-elevate {}
-  .no-default-active-elevate {}
+  .no-default-hover-elevate { --no-elevate: 1; }
+  .no-default-active-elevate { --no-elevate: 1; }
 
   .toggle-elevate::before,
   .toggle-elevate-2::before {
