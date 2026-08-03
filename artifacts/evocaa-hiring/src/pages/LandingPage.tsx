@@ -12,57 +12,95 @@ const UNSPLASH = {
 };
 
 const ROLE_BULLETS = [
-  'Edit high-performing Instagram Reels & YouTube Shorts',
-  'Create engaging marketing videos',
-  'Work closely with the content and marketing team',
-  'Improve videos based on performance data and feedback',
-  'Deliver projects on time',
+  {
+    text: 'Own short-form performance — edit Reels & Shorts engineered to stop the scroll and convert viewers into followers.',
+    tag: 'Core',
+  },
+  {
+    text: 'Translate raw footage into brand-aligned stories that feel native to each platform — not like ads.',
+    tag: 'Creative',
+  },
+  {
+    text: 'Study retention curves and drop-off points. Iterate on cuts, pacing, and hooks until the numbers move.',
+    tag: 'Analytical',
+  },
+  {
+    text: 'Partner directly with the content strategist and marketing lead — your edits shape campaign direction.',
+    tag: 'Collaborative',
+  },
+  {
+    text: 'Maintain a consistent output cadence without compromising quality — reliability is non-negotiable here.',
+    tag: 'Ownership',
+  },
 ];
 
 const IDEAL_BULLETS = [
-  'Loves storytelling',
-  'Learns quickly',
-  'Accepts feedback positively',
-  'Has strong attention to detail',
-  'Enjoys solving creative problems',
-  'Wants long-term career growth',
+  'Watches content analytics like a hawk',
+  'Can identify why a video underperformed in 60 seconds',
+  'Treats feedback as signal, not criticism',
+  'Has an eye for pacing, rhythm, and visual tension',
+  'Thinks about the viewer, not just the edit',
+  'Takes creative ownership and runs with a brief',
+  'Shows up consistently — no hand-holding required',
+  'Hungry to grow beyond where they are today',
 ];
 
 const REQUIREMENT_CARDS = [
   {
     title: 'Software & Technical',
     items: [
-      'Experience with DaVinci Resolve & Adobe Premiere Pro',
-      'Basic knowledge of After Effects',
-      'Basic color correction and audio editing',
+      'Proficient in DaVinci Resolve and/or Adobe Premiere Pro',
+      'Working knowledge of After Effects for motion graphics',
+      'Solid color correction and audio mixing fundamentals',
+      'Comfortable working with LUTs, transitions, and overlays',
     ],
   },
   {
     title: 'Skills & Portfolio',
     items: [
-      'Understanding of short-form content',
-      'Portfolio with previous work',
-      'Ability to meet deadlines',
+      'Deep understanding of short-form content mechanics',
+      'Portfolio that demonstrates hook-first editing thinking',
+      'Proven ability to meet tight turnaround deadlines',
+      'Bonus: experience with A/B testing video variants',
     ],
   },
 ];
 
 const DAILY_TASKS = [
-  'Edit 3–5 short-form videos daily',
-  'Add captions, sound effects, and motion graphics',
-  'Follow brand guidelines',
-  'Organize project files',
-  'Collaborate with designers and marketers',
-  'Continuously improve editing quality',
+  {
+    task: 'Edit 3–5 short-form videos per day across platforms',
+    detail: 'Reels, Shorts, TikTok — each with platform-native pacing and hook structure.',
+  },
+  {
+    task: 'Embed captions, SFX, and motion accents that amplify emotion',
+    detail: 'Not decoration — these elements are part of the storytelling.',
+  },
+  {
+    task: 'Adhere to brand guidelines while pushing creative boundaries',
+    detail: 'The best editors work within constraints, not despite them.',
+  },
+  {
+    task: 'Maintain clean, versioned project file architecture',
+    detail: 'Speed comes from organisation. Chaos kills output quality.',
+  },
+  {
+    task: 'Sync daily with designers, strategists, and campaign leads',
+    detail: 'Your edit is one piece of a larger performance puzzle.',
+  },
+  {
+    task: 'Review performance data and refine your editing decisions weekly',
+    detail: 'If you\'re not looking at the numbers, you\'re just guessing.',
+  },
 ];
 
 const FILTER_ITEMS = [
-  "Can't accept constructive feedback",
-  'Frequently miss deadlines',
-  'Prefer working without accountability',
-  'Only know basic template editing',
-  'Are looking for a temporary job',
-  "Aren't willing to learn and improve",
+  "Treat feedback as personal criticism and shut down",
+  'Miss deadlines without a heads-up — ever',
+  'Need constant direction to produce consistent output',
+  'Rely on templates and presets as a substitute for craft',
+  'Are looking for a freelance side-project or temp gig',
+  "Aren't interested in studying what actually performs",
+  'Prioritise your own aesthetic over the audience\'s experience',
 ];
 
 const NAV_LINKS = [
@@ -227,12 +265,20 @@ export default function LandingPage({ onApply }: LandingPageProps) {
             <h3 className="content-section-label">Job Summary</h3>
             <div className="content-section-body">
               <p className="body-copy text-xl sm:text-2xl font-light leading-relaxed" style={{ color: 'var(--text-primary)' }}>
-                We're looking for a creative Video Editor who understands{' '}
-                <strong className="font-semibold" style={{ color: 'var(--accent)' }}>storytelling, marketing psychology,</strong> and
-                short-form content —{' '}
-                <em style={{ color: 'var(--text-secondary)' }}>not just editing software.</em>
+                Short-form content is the fastest-growing acquisition channel for brands in 2026.
+                We need an editor who treats every second of footage as{' '}
+                <strong className="font-semibold" style={{ color: 'var(--accent)' }}>strategic real estate</strong> —
+                someone who understands{' '}
+                <strong className="font-semibold" style={{ color: 'var(--accent)' }}>storytelling, retention mechanics, and marketing psychology,</strong>{' '}
+                <em style={{ color: 'var(--text-secondary)' }}>not just which buttons to press in Premiere.</em>
               </p>
-              {/* Quote-callout card — preserved as-is */}
+              <p className="body-copy mt-4" style={{ color: 'var(--text-secondary)' }}>
+                The average viewer decides within{' '}
+                <strong style={{ color: 'var(--text-primary)' }}>1.7 seconds</strong>{' '}
+                whether to keep watching. Your first cut is a hypothesis. Your final cut is a result.
+                We expect you to know the difference — and to keep testing until the numbers prove it.
+              </p>
+              {/* Quote-callout card */}
               <div
                 className="mt-8 p-6 rounded-xl"
                 style={{
@@ -240,12 +286,12 @@ export default function LandingPage({ onApply }: LandingPageProps) {
                   borderLeft: '3px solid var(--accent)',
                 }}
               >
-                <p className="body-copy text-base">
-                  We don't hire based only on certificates or years of experience. We hire people
-                  with the right mindset, a willingness to learn, and the ability to solve real
-                  problems. If you can prove your skills through our assessment, we care more about
-                  your potential than your resume.
+                <p className="body-copy text-base" style={{ color: 'var(--text-primary)', fontStyle: 'italic' }}>
+                  "We don't hire based on certificates or years of experience.
+                  We hire for mindset, craft, and the hunger to get better.
+                  If your work moves people — and the data backs it up — we want to talk."
                 </p>
+                <p className="text-sm mt-3 font-semibold" style={{ color: 'var(--accent)' }}>— Evocaa Hiring Team</p>
               </div>
             </div>
           </div>
@@ -254,12 +300,29 @@ export default function LandingPage({ onApply }: LandingPageProps) {
           <div id="role" className="content-section">
             <h3 className="content-section-label">Your Role</h3>
             <div className="content-section-body">
-              <h4>What success looks like.</h4>
-              <ul className="space-y-5">
+              <h4>What you'll actually own.</h4>
+              <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+                This isn't a support role. You have direct impact on content performance from day one.
+              </p>
+              <ul className="space-y-4">
                 {ROLE_BULLETS.map((item, i) => (
                   <li key={i} className="reveal flex items-start gap-4">
-                    <span className="step-num">{String(i + 1).padStart(3, '0')}</span>
-                    <p className="body-copy pt-2">{item}</p>
+                    <span
+                      className="flex-shrink-0 mt-1 text-lg font-bold leading-none"
+                      style={{ color: 'var(--accent)', fontFamily: 'var(--app-font-mono)', minWidth: '1.25rem' }}
+                      aria-hidden="true"
+                    >
+                      →
+                    </span>
+                    <div>
+                      <p className="body-copy" style={{ color: 'var(--text-primary)' }}>{item.text}</p>
+                      <span
+                        className="inline-block mt-1.5 text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded"
+                        style={{ background: 'rgba(232,180,74,0.12)', color: 'var(--accent)' }}
+                      >
+                        {item.tag}
+                      </span>
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -270,12 +333,15 @@ export default function LandingPage({ onApply }: LandingPageProps) {
           <div className="content-section">
             <h3 className="content-section-label">Ideal Candidate</h3>
             <div className="content-section-body">
-              <h4>You are someone who:</h4>
+              <h4>You think like this.</h4>
+              <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+                Skills can be taught. These traits are harder to train for.
+              </p>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
                 {IDEAL_BULLETS.map((item, i) => (
-                  <li key={i} className="reveal flex items-center gap-3">
+                  <li key={i} className="reveal flex items-start gap-3">
                     <span
-                      className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                      className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-2"
                       style={{ background: 'var(--accent)' }}
                     />
                     <span className="body-copy">{item}</span>
@@ -321,18 +387,37 @@ export default function LandingPage({ onApply }: LandingPageProps) {
           <div id="day-to-day" className="content-section">
             <h3 className="content-section-label">Day-to-Day</h3>
             <div className="content-section-body">
-              <h4>What You'll Do.</h4>
-              <ul className="space-y-6">
+              <h4>A real day in this seat.</h4>
+              <p className="body-copy text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+                No two days are identical — but this is the consistent rhythm you'll build.
+              </p>
+              <ul className="space-y-0">
                 {DAILY_TASKS.map((item, i) => (
                   <li
                     key={i}
-                    className="reveal flex items-start gap-5 pb-6"
-                    style={{ borderBottom: i < DAILY_TASKS.length - 1 ? '1px solid var(--divider)' : undefined }}
+                    className="reveal flex items-start gap-5 py-5"
+                    style={{ borderBottom: '1px solid var(--divider)' }}
                   >
-                    <span className="step-num">{String(i + 1).padStart(3, '0')}</span>
-                    <p className="body-copy font-medium pt-1" style={{ color: 'var(--text-primary)' }}>
-                      {item}
-                    </p>
+                    <span
+                      className="flex-shrink-0 font-bold leading-none pt-0.5"
+                      style={{
+                        fontFamily: 'var(--app-font-mono)',
+                        fontSize: '28px',
+                        color: 'var(--accent)',
+                        opacity: 0.9,
+                        minWidth: '2.5rem',
+                      }}
+                    >
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <div>
+                      <p className="body-copy font-semibold" style={{ color: 'var(--text-primary)' }}>
+                        {item.task}
+                      </p>
+                      <p className="body-copy text-sm mt-1" style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
+                        {item.detail}
+                      </p>
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -343,23 +428,33 @@ export default function LandingPage({ onApply }: LandingPageProps) {
           <div className="content-section">
             <h3 className="content-section-label">Important</h3>
             <div className="content-section-body">
-              <h4>You Shouldn't Apply If</h4>
-              <p className="body-copy text-base mb-6">Don't apply if you:</p>
+              <h4>Read this before you apply.</h4>
+              <p className="body-copy mb-6" style={{ color: 'var(--text-secondary)' }}>
+                We keep our team tight. Every hire has direct impact on what we ship and how it
+                performs. That means we're deliberate — and honest about who this role{' '}
+                <em>isn't</em> for.
+              </p>
               <div
                 className="reveal rounded-xl p-6 sm:p-8"
-                style={{ background: 'var(--bg-elevated)' }}
+                style={{
+                  background: 'var(--bg-elevated)',
+                  border: '1px solid rgba(255,255,255,0.06)',
+                }}
               >
+                <p className="text-xs font-bold uppercase tracking-widest mb-5" style={{ color: 'var(--text-muted)' }}>
+                  Don't apply if you —
+                </p>
                 <ul className="space-y-4">
                   {FILTER_ITEMS.map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
                       <span
-                        className="text-lg leading-none flex-shrink-0 mt-0.5"
-                        style={{ color: 'var(--warning-red)' }}
+                        className="text-base font-bold leading-none flex-shrink-0 mt-0.5"
+                        style={{ color: '#FF4D4D' }}
                         aria-hidden="true"
                       >
-                        ×
+                        ✕
                       </span>
-                      <span className="body-copy">{item}</span>
+                      <span className="body-copy" style={{ color: 'var(--text-secondary)' }}>{item}</span>
                     </li>
                   ))}
                 </ul>
