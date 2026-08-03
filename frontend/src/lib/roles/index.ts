@@ -34,67 +34,62 @@ export const ROLES: RoleConfig[] = [
     title: 'Video Editor',
     subtitle: '(Full-Time)',
     team: 'Content & Marketing',
-    location: 'Coimbatore (Office)',
+    location: 'Coimbatore (Work from Office)',
     type: 'Full-Time',
     datePosted: 'Jul 31, 2026',
     heroImage: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=1920&q=85&auto=format&fit=crop',
-    jobSummary: 'Short-form content is the fastest-growing acquisition channel for brands in 2026. We need an editor who treats every second of footage as strategic real estate — someone who understands storytelling, retention mechanics, and marketing psychology, not just which buttons to press in Premiere. The average viewer decides within 1.7 seconds whether to keep watching. Your first cut is a hypothesis. Your final cut is a result. We expect you to know the difference — and to keep testing until the numbers prove it.',
+    jobSummary: "We're looking for a creative Video Editor who understands storytelling, marketing psychology, and short-form content—not just editing software.",
     yourRole: {
-      heading: "What you'll actually own.",
+      heading: 'What success looks like',
       paragraphs: [
-        'Own short-form performance — edit Reels & Shorts engineered to stop the scroll and convert viewers into followers.',
-        'Translate raw footage into brand-aligned stories that feel native to each platform — not like ads.',
-        'Study retention curves and drop-off points. Iterate on cuts, pacing, and hooks until the numbers move.',
-        'Partner directly with the content strategist and marketing lead — your edits shape campaign direction.',
-        'Maintain a consistent output cadence without compromising quality — reliability is non-negotiable here.'
+        'Edit high-performing Instagram Reels & YouTube Shorts',
+        'Create engaging marketing videos',
+        'Work closely with the content and marketing team',
+        'Improve videos based on performance data and feedback',
+        'Deliver projects on time'
       ]
     },
     idealCandidate: [
-      'Watches content analytics like a hawk',
-      'Can identify why a video underperformed in 60 seconds',
-      'Treats feedback as signal, not criticism',
-      'Has an eye for pacing, rhythm, and visual tension',
-      'Thinks about the viewer, not just the edit',
-      'Takes creative ownership and runs with a brief',
-      'Shows up consistently — no hand-holding required',
-      'Hungry to grow beyond where they are today'
+      'Loves storytelling',
+      'Learns quickly',
+      'Accepts feedback positively',
+      'Has strong attention to detail',
+      'Enjoys solving creative problems',
+      'Wants long-term career growth'
     ],
     requirements: [
       {
         title: 'Software & Technical',
         items: [
-          'Proficient in DaVinci Resolve and/or Adobe Premiere Pro',
-          'Working knowledge of After Effects for motion graphics',
-          'Solid color correction and audio mixing fundamentals',
-          'Comfortable working with LUTs, transitions, and overlays'
+          'Experience with DaVinci Resolve & Adobe Premiere Pro',
+          'Basic knowledge of After Effects',
+          'Basic color correction and audio editing'
         ]
       },
       {
         title: 'Skills & Portfolio',
         items: [
-          'Deep understanding of short-form content mechanics',
-          'Portfolio that demonstrates hook-first editing thinking',
-          'Proven ability to meet tight turnaround deadlines',
-          'Bonus: experience with A/B testing video variants'
+          'Understanding of short-form content',
+          'Portfolio with previous work',
+          'Ability to meet deadlines'
         ]
       }
     ],
     whatYoullDo: [
-      'Edit 3–5 short-form videos per day across platforms|Reels, Shorts, TikTok — each with platform-native pacing and hook structure.',
-      'Embed captions, SFX, and motion accents that amplify emotion|Not decoration — these elements are part of the storytelling.',
-      'Adhere to brand guidelines while pushing creative boundaries|The best editors work within constraints, not despite them.',
-      'Maintain clean, versioned project file architecture|Speed comes from organisation. Chaos kills output quality.',
-      'Sync daily with designers, strategists, and campaign leads|Your edit is one piece of a larger performance puzzle.',
-      'Review performance data and refine your editing decisions weekly|If you\'re not looking at the numbers, you\'re just guessing.'
+      'Edit 3–5 short-form videos daily',
+      'Add captions, sound effects, and motion graphics',
+      'Follow brand guidelines',
+      'Organize project files',
+      'Collaborate with designers and marketers',
+      'Continuously improve editing quality'
     ],
     dontApplyIf: [
-      'Treat feedback as personal criticism and shut down',
-      'Miss deadlines without a heads-up — ever',
-      'Need constant direction to produce consistent output',
-      'Rely on templates and presets as a substitute for craft',
-      'Are looking for a freelance side-project or temp gig',
-      'Aren\'t interested in studying what actually performs',
-      'Prioritise your own aesthetic over the audience\'s experience'
+      "Can't accept constructive feedback",
+      'Frequently miss deadlines',
+      'Prefer working without accountability',
+      'Only know basic template editing',
+      'Are looking for a temporary job',
+      "Aren't willing to learn and improve"
     ],
     softwareOptions: [
       'Adobe Premiere Pro',

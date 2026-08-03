@@ -264,7 +264,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                   <p className="body-copy text-base" style={{ color: 'var(--text-primary)', fontStyle: 'italic' }}>
                     "We don't hire based on certificates or years of experience.
                     We hire for mindset, craft, and the hunger to get better.
-                    If your work moves people — and the data backs it up — we want to talk."
+                    If your work moves people - and the data backs it up — we want to talk."
                   </p>
                   <p className="text-sm mt-3 font-semibold" style={{ color: 'var(--accent)' }}>— Evocaa Hiring Team</p>
                 </div>
@@ -400,7 +400,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                 <h4>Read this before you apply.</h4>
                 <p className="body-copy mb-6" style={{ color: 'var(--text-secondary)' }}>
                   We keep our team tight. Every hire has direct impact on what we ship and how it
-                  performs. That means we're deliberate — and honest about who this role{' '}
+                  performs. That means we're deliberate - and honest about who this role{' '}
                   <em>isn't</em> for.
                 </p>
                 <div
@@ -411,7 +411,7 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
                   }}
                 >
                   <p className="text-xs font-bold uppercase tracking-widest mb-5" style={{ color: 'var(--text-muted)' }}>
-                    Don't apply if you —
+                    Don't apply if you -
                   </p>
                   <ul className="space-y-4">
                     {role.dontApplyIf.map((item, i) => (
