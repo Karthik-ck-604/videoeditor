@@ -553,7 +553,6 @@ export default function LandingPage({ roleSlug }: LandingPageProps) {
               {[
                 { label: 'Privacy Policy', href: 'https://www.evocaa.in/privacy-policy/' },
                 { label: 'Terms & Conditions', href: 'https://www.evocaa.in/terms-and-conditions/' },
-                { label: 'Contact Us', href: '#' },
               ].map((link, i, arr) => (
                 <React.Fragment key={link.label}>
                   <a
