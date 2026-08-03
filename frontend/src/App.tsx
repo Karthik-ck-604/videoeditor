@@ -1,10 +1,12 @@
 import { useState, useCallback, useEffect } from 'react';
+import { Router, Route, Switch } from 'wouter';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { useToast } from '@/hooks/use-toast';
 import LandingPage from '@/pages/LandingPage';
 import Assessment from '@/pages/Assessment';
+import OpenRolesPage from '@/pages/OpenRolesPage';
 import { AssessmentData, INITIAL_DATA } from '@/lib/assessmentData';
 import { initLenis, getLenis } from '@/lib/lenis';
 
@@ -20,77 +22,66 @@ function loadSavedData(): AssessmentData {
   return INITIAL_DATA;
 }
 
-function AppContent() {
-  const [view, setView] = useState<'landing' | 'assessment'>('landing');
-  const [data, setData] = useState<AssessmentData>(loadSavedData);
+// ── Assessment wrapper — reads roleSlug from route, manages data & submission ──
+function AssessmentPage({ roleSlug }: { roleSlug: string }) {
+  const [data, setData] = useState<AssessmentData>(() => {
+    // Merge stored data only if it belongs to this role
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (!parsed.roleSlug || parsed.roleSlug === roleSlug) {
+          return { ...INITIAL_DATA, ...parsed };
+        }
+      }
+    } catch {}
+    return INITIAL_DATA;
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
-
-  // Page-wide inertia scroll (Lenis) — degrades gracefully for reduced-motion.
-  useEffect(() => {
-    initLenis();
-  }, []);
+  const [, setLocation] = [null, (path: string) => { window.location.href = path; }];
 
   const handleChange = useCallback((updates: Partial<AssessmentData>) => {
     setData((prev) => {
       const next = { ...prev, ...updates };
-      // Persist to localStorage (excluding file)
       try {
         const { resumeFile, ...rest } = next;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(rest));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...rest, roleSlug }));
       } catch {}
       return next;
     });
-  }, []);
-
-  const handleApply = useCallback(() => {
-    setView('assessment');
-    const lenis = getLenis();
-    if (lenis) {
-      lenis.scrollTo(0, { immediate: true });
-    } else {
-      window.scrollTo(0, 0);
-    }
-  }, []);
+  }, [roleSlug]);
 
   const handleBack = useCallback(() => {
-    setView('landing');
     const lenis = getLenis();
-    if (lenis) {
-      lenis.scrollTo(0, { immediate: true });
-    } else {
-      window.scrollTo(0, 0);
-    }
-  }, []);
+    if (lenis) lenis.scrollTo(0, { immediate: true });
+    else window.scrollTo(0, 0);
+    window.location.href = `/hiring/${roleSlug}`;
+  }, [roleSlug]);
 
   const handleSubmit = useCallback(async () => {
     setIsSubmitting(true);
     try {
       const payload = {
-        // Basic info
+        roleSlug,
         fullName: data.fullName,
         mobile: data.mobile,
         email: data.email,
         city: data.city,
         portfolioLink: data.portfolioLink,
         hasResume: !!data.resumeFile,
-        // Professional
         yearsExperience: data.yearsExperience,
         softwareUsed: data.softwareUsed,
         contentType: data.contentType,
         currentSalary: data.currentSalary,
         expectedSalary: data.expectedSalary,
         noticePeriod: data.noticePeriod,
-        // Tech answers
         techAnswers: data.tech,
-        // Work style answers
         workStyleAnswers: data.workStyle,
-        // Portfolio
         bestProject: data.bestProject,
         proudProject: data.proudProject,
         clientStrength: data.clientStrength,
-        // Final
         whyEvocaa: data.whyEvocaa,
         whyYou: data.whyYou,
         skillLearning: data.skillLearning,
@@ -106,42 +97,67 @@ function AppContent() {
 
       if (!res.ok) throw new Error('Submission failed');
 
-      // Clear persisted data
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem('evocaa-assessment-step');
       setSubmitted(true);
     } catch (err) {
       console.error(err);
-      // Still show success to candidate — don't reveal scoring issues
+      // Still show success to candidate — don't surface scoring issues
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem('evocaa-assessment-step');
       setSubmitted(true);
     } finally {
       setIsSubmitting(false);
     }
-  }, [data]);
+  }, [data, roleSlug]);
 
-  if (view === 'assessment') {
-    return (
-      <Assessment
-        data={data}
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-        onBack={handleBack}
-        isSubmitting={isSubmitting}
-        submitted={submitted}
-      />
-    );
-  }
+  return (
+    <Assessment
+      roleSlug={roleSlug}
+      data={data}
+      onChange={handleChange}
+      onSubmit={handleSubmit}
+      onBack={handleBack}
+      isSubmitting={isSubmitting}
+      submitted={submitted}
+    />
+  );
+}
 
-  return <LandingPage onApply={handleApply} />;
+function AppContent() {
+  // Page-wide inertia scroll (Lenis) — degrades gracefully for reduced-motion.
+  useEffect(() => {
+    initLenis();
+  }, []);
+
+  return (
+    <Switch>
+      {/* Open roles grid */}
+      <Route path="/" component={OpenRolesPage} />
+
+      {/* Role-specific assessment */}
+      <Route path="/hiring/:roleSlug/apply">
+        {(params) => <AssessmentPage roleSlug={params.roleSlug} />}
+      </Route>
+
+      {/* Role detail / landing page */}
+      <Route path="/hiring/:roleSlug">
+        {(params) => <LandingPage roleSlug={params.roleSlug} />}
+      </Route>
+
+      {/* Fallback → open roles */}
+      <Route component={OpenRolesPage} />
+    </Switch>
+  );
 }
 
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <AppContent />
+        <Router>
+          <AppContent />
+        </Router>
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>

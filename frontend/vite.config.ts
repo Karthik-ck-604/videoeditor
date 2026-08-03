@@ -43,7 +43,6 @@ export default defineConfig(({ command }) => {
         '@assets': path.resolve(
           import.meta.dirname,
           '..',
-          '..',
           'attached_assets',
         ),
       },

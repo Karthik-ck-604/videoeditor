@@ -4,7 +4,7 @@
   "files": [],
   "references": [
     {
-      "path": "./lib/api-zod"
+      "path": "./packages/api-zod"
     }
   ]
 }

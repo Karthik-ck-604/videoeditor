@@ -30,10 +30,12 @@ minimumReleaseAge: 1440
 minimumReleaseAgeExclude: []
 
 packages:
-  - artifacts/*
-  - lib/*
-  - lib/integrations/*
+  - frontend
+  - backend
+  - packages/*
+  - tooling/*
   - scripts
+
 
 catalog:
   '@tailwindcss/vite': ^4.1.14

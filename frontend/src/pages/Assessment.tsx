@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   AssessmentData,
   STEP_NAMES,
-  TECH_QUESTIONS,
-  WORK_STYLE_QUESTIONS,
 } from '@/lib/assessmentData';
+import { ROLES, RoleConfig } from '@/lib/roles';
 import { ChevronLeft, ChevronRight, Upload, X, Check } from 'lucide-react';
 
 interface AssessmentProps {
+  roleSlug: string;
   data: AssessmentData;
   onChange: (updates: Partial<AssessmentData>) => void;
   onSubmit: () => void;
@@ -454,11 +454,13 @@ function Step2({
   onChange,
   onNext,
   onBack,
+  role,
 }: {
   data: AssessmentData;
   onChange: (u: Partial<AssessmentData>) => void;
   onNext: () => void;
   onBack: () => void;
+  role: RoleConfig;
 }) {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -469,16 +471,7 @@ function Step2({
     '2–4 years',
     '4+ years',
   ];
-  const softwareOpts = [
-    'Adobe Premiere Pro',
-    'After Effects',
-    'DaVinci Resolve',
-    'Final Cut Pro',
-    'CapCut',
-    'Photoshop',
-    'Illustrator',
-    'Other',
-  ];
+  const softwareOpts = role.softwareOptions;
   const contentTypeOpts = [
     'Instagram Reels',
     'YouTube Shorts',
@@ -669,16 +662,19 @@ function Step3({
   onChange,
   onNext,
   onBack,
+  role,
 }: {
   data: AssessmentData;
   onChange: (u: Partial<AssessmentData>) => void;
   onNext: () => void;
   onBack: () => void;
+  role: RoleConfig;
 }) {
   const [currentQ, setCurrentQ] = useState(0);
   const [errors, setErrors] = useState('');
-  const total = TECH_QUESTIONS.length;
-  const q = TECH_QUESTIONS[currentQ];
+  const questions = role.techQuestions;
+  const total = questions.length;
+  const q = questions[currentQ];
   const answered = Object.keys(data.tech).length;
 
   function selectAnswer(answer: string) {
@@ -710,7 +706,7 @@ function Step3({
 
       {/* Question navigator dots */}
       <div className="flex gap-2 mb-6 flex-wrap">
-        {TECH_QUESTIONS.map((_, i) => (
+        {questions.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrentQ(i)}
@@ -756,7 +752,7 @@ function Step3({
             className="font-semibold leading-snug pt-1"
             style={{ fontSize: 'clamp(1rem, 2.5vw, 1.2rem)', color: '#fff' }}
           >
-            {q.q}
+            {q.question}
           </h3>
         </div>
 
@@ -827,16 +823,19 @@ function Step4({
   onChange,
   onNext,
   onBack,
+  role,
 }: {
   data: AssessmentData;
   onChange: (u: Partial<AssessmentData>) => void;
   onNext: () => void;
   onBack: () => void;
+  role: RoleConfig;
 }) {
   const [currentQ, setCurrentQ] = useState(0);
   const [errors, setErrors] = useState('');
-  const total = WORK_STYLE_QUESTIONS.length;
-  const q = WORK_STYLE_QUESTIONS[currentQ];
+  const questions = role.workStyleQuestions;
+  const total = questions.length;
+  const q = questions[currentQ];
   const answered = Object.keys(data.workStyle).length;
 
   function selectAnswer(answer: string) {
@@ -866,7 +865,7 @@ function Step4({
 
       {/* Question dots */}
       <div className="flex gap-2 mb-6">
-        {WORK_STYLE_QUESTIONS.map((_, i) => (
+        {questions.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrentQ(i)}
@@ -913,7 +912,7 @@ function Step4({
             className="font-semibold leading-snug pt-1"
             style={{ fontSize: 'clamp(1rem, 2.5vw, 1.15rem)', color: '#fff' }}
           >
-            {q.q}
+            {q.question}
           </h3>
         </div>
 
@@ -983,17 +982,19 @@ function Step5({
   onChange,
   onNext,
   onBack,
+  role,
 }: {
   data: AssessmentData;
   onChange: (u: Partial<AssessmentData>) => void;
   onNext: () => void;
   onBack: () => void;
+  role: RoleConfig;
 }) {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   function validate() {
     const e: Record<string, string> = {};
-    if (!data.bestProject.trim()) e.bestProject = 'Please share a link to your best project';
+    if (!data.bestProject.trim()) e.bestProject = 'Please share a link to your best work';
     if (!data.proudProject.trim()) e.proudProject = 'Please answer this question';
     if (!data.clientStrength.trim()) e.clientStrength = 'Please answer this question';
     setErrors(e);
@@ -1010,7 +1011,7 @@ function Step5({
       />
 
       <div className="space-y-6">
-        <Field label="Share your best editing project" required error={errors.bestProject}>
+        <Field label={role.portfolioPrompt} required error={errors.bestProject}>
           <input
             className="dark-input"
             placeholder="Link to your best project (YouTube, Drive, Vimeo, etc.)"
@@ -1155,6 +1156,7 @@ function Step6({
 // MAIN ASSESSMENT COMPONENT
 // ─────────────────────────────────────────
 export default function Assessment({
+  roleSlug,
   data,
   onChange,
   onSubmit,
@@ -1165,20 +1167,37 @@ export default function Assessment({
   const [step, setStep] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Look up the role config
+  const role = ROLES.find((r) => r.slug === roleSlug);
+
   // Scroll to top on step change
   useEffect(() => {
     containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [step]);
 
-  // Restore from localStorage
+  // Stale localStorage guard: if stored data belongs to a different role, wipe it
   useEffect(() => {
+    try {
+      const raw = localStorage.getItem('evocaa-assessment-data');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed.roleSlug && parsed.roleSlug !== roleSlug) {
+          localStorage.removeItem('evocaa-assessment-data');
+          localStorage.removeItem('evocaa-assessment-step');
+          // Reset step to 1 for this new role
+          setStep(1);
+          return;
+        }
+      }
+    } catch {}
+    // Restore step from localStorage (only if same role)
     const saved = localStorage.getItem('evocaa-assessment-step');
     if (saved) {
       const parsed = parseInt(saved, 10);
       if (parsed >= 1 && parsed <= 6) setStep(parsed);
     }
-  }, []);
+  }, [roleSlug]);
 
   useEffect(() => {
     localStorage.setItem('evocaa-assessment-step', String(step));
@@ -1277,10 +1296,10 @@ export default function Assessment({
 
         <div className="relative">
           {step === 1 && <Step1 {...stepProps} />}
-          {step === 2 && <Step2 {...stepProps} />}
-          {step === 3 && <Step3 {...stepProps} />}
-          {step === 4 && <Step4 {...stepProps} />}
-          {step === 5 && <Step5 {...stepProps} />}
+          {step === 2 && role && <Step2 {...stepProps} role={role} />}
+          {step === 3 && role && <Step3 {...stepProps} role={role} />}
+          {step === 4 && role && <Step4 {...stepProps} role={role} />}
+          {step === 5 && role && <Step5 {...stepProps} role={role} />}
           {step === 6 && (
             <Step6
               {...stepProps}
